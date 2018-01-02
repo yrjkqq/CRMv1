@@ -1,0 +1,30 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="CRMv1:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/CRMv1_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="CRMv1/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="CRMv1" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="application" name="aop" />
+          <element id="library" level="application" name="commons-logging-1.2" />
+          <element id="library" level="application" name="druid-1.1.6" />
+          <element id="library" level="application" name="hibernate-required" />
+          <element id="library" level="application" name="jackson" />
+          <element id="library" level="application" name="jstl-1.2" />
+          <element id="library" level="application" name="ojdbc6" />
+          <element id="library" level="application" name="spring-aop" />
+          <element id="library" level="application" name="spring-core" />
+          <element id="library" level="application" name="spring-jdbc" />
+          <element id="library" level="application" name="spring-mvc" />
+          <element id="library" level="application" name="spring-orm" />
+          <element id="library" level="application" name="spring-web" />
+          <element id="library" level="application" name="cglib" />
+          <element id="library" level="application" name="validation" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

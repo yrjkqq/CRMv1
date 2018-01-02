@@ -1,0 +1,7 @@
+1. 底层数据访问由 JdbcTemplate 改为 Hibernate
+2. 使用 hibernate 重写 po 类
+    2.1 角色与用户之间是多对多关系
+        维护关系: 由用户 CrmUser 维护
+    2.2 角色与资源之间是多对多关系
+        维护关系; 由角色 CrmRole 维护
+    2.3 资源表中 parent 自关联
