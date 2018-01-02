@@ -47,7 +47,9 @@ public class CrmUserController {
     // 删除用户
     @RequestMapping("deleteUser/{id}")
     public String deleteUser(@PathVariable("id") Integer id) {
-        crmUserService.deleteUser(id);
+        CrmUser crmUser = new CrmUser();
+        crmUser.setId(id);
+        crmUserService.deleteUser(crmUser);
         return "redirect:/crm/main";
     }
 

@@ -33,8 +33,8 @@ public class CrmUserServiceImpl implements CrmUserService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
-    public void deleteUser(int id) {
-        crmUserDao.deleteUser(id);
+    public void deleteUser(CrmUser crmUser) {
+        crmUserDao.deleteUser(crmUser);
     }
 
     @Override

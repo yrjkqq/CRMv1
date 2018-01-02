@@ -1,5 +1,7 @@
 package com.cdsxt.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,7 +16,7 @@ public class CrmUser {
     private Byte enabled;
 
     @Id
-    @SequenceGenerator(name = "UserGen", sequenceName = "seq_user_role")
+    @SequenceGenerator(name = "UserGen", sequenceName = "seq_crm_user")
     @GeneratedValue(generator = "UserGen")
     private Integer id;
 
@@ -23,6 +25,7 @@ public class CrmUser {
     private Byte sex;
     private String username;
 
+    @JsonIgnore
     // 保存角色集合: 维护主键
     @ManyToMany
     @JoinTable(

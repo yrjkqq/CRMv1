@@ -7,7 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,9 +14,6 @@ import java.util.List;
 @Repository
 @Primary
 public class CrmResourceDaoImpl implements CrmResourceDao {
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -43,9 +39,8 @@ public class CrmResourceDaoImpl implements CrmResourceDao {
 
     @Override
     public CrmResource queryResourceById(int id) {
-        Query query = this.getSession().createQuery("from CrmResource cr where cr.id = ?").setInteger(0, id);
+        Query query = this.getSession().createQuery("from CrmResource cr where cr.id = :id").setInteger("id", id);
         return (CrmResource) query.uniqueResult();
-
     }
 
     @Override

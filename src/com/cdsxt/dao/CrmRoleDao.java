@@ -10,7 +10,7 @@ public interface CrmRoleDao {
 
     List<CrmRole> queryRoleOnePage(int startRow, int pageRow);
 
-    void deleteRole(int id);
+    void deleteRole(CrmRole crmRole);
 
     CrmRole queryRoleById(int id);
 

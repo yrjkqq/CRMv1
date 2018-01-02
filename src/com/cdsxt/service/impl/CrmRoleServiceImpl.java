@@ -34,8 +34,8 @@ public class CrmRoleServiceImpl implements CrmRoleService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
-    public void deleteRole(int id) {
-        crmRoleDao.deleteRole(id);
+    public void deleteRole(CrmRole crmRole) {
+        crmRoleDao.deleteRole(crmRole);
     }
 
     @Override

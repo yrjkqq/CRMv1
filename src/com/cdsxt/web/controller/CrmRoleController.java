@@ -56,7 +56,9 @@ public class CrmRoleController {
     // 删除角色
     @RequestMapping("deleteRole/{id}")
     public String deleteRole(@PathVariable("id") Integer id) {
-        crmRoleService.deleteRole(id);
+        CrmRole crmRole = new CrmRole();
+        crmRole.setId(id);
+        crmRoleService.deleteRole(crmRole);
         return "redirect:/crm/role";
     }
 

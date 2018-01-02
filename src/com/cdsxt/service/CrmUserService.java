@@ -10,7 +10,7 @@ public interface CrmUserService {
 
     List<CrmUser> queryOnePage(int startRow, int pageRow);
 
-    void deleteUser(int id);
+    void deleteUser(CrmUser crmUser);
 
     CrmUser queryUserById(int id);
 
