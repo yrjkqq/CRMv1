@@ -14,6 +14,8 @@ public interface UserDao {
 
     User queryUserById(int id);
 
+    User queryUserByName(String name);
+
     void modifyUser(User user);
 
     void addUser(User user);

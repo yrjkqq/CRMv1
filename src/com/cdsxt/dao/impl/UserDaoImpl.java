@@ -46,6 +46,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User queryUserByName(String name) {
+        return (User) this.getSession().createQuery("from User cu where cu.username = :username")
+                .setString("username", name)
+                .uniqueResult();
+    }
+
+    @Override
     public void deleteUser(User user) {
         this.getSession().delete(user);
     }

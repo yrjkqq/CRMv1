@@ -69,20 +69,18 @@
                 </form>
 
             </div>
-            <!--角色列表-->
+            <!--用户列表-->
             <div class="row">
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
                     <div class="panel-heading" style="padding-bottom: 5px; padding-top: 5px">
                         <div class="row">
                             <div class="col-md-4">用户列表</div>
-                            <div class="col-md-8 text-right">
-                                <a role="button" href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                            <div class="col-md-8">
+                                <%--todo 此处的按钮应该是动态获取到当前用户是否有 添加用户 资源, 有才能显示--%>
+                                <a role="button" href="#" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
                                    data-target="#myModalToAdd">
                                     <span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户
-                                </a>
-                                <a role="button" href="#" class="btn btn-warning btn-sm">
-                                    <span class="glyphicon glyphicon-trash"></span>&nbsp;删除选中
                                 </a>
                             </div>
                         </div>
@@ -115,6 +113,10 @@
                                 <td>${user.sex == 1 ? '男' : '女'}</td>
                                 <td>${user.username}</td>
                                 <td>
+                                    <%--增加分配角色按钮--%>
+                                    <a role="button" href="users/allocateRole/${user.id}" class="btn btn-danger btn-xs">
+                                        <span class="glyphicon glyphicon-trash"></span>&nbsp;分配角色
+                                    </a>
                                     <a role="button"
                                        class="btn btn-warning btn-xs" data-toggle="modal"
                                        data-target="#myModalToUpdate" onclick="modifyUser(${user.id})">

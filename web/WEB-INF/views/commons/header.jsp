@@ -46,13 +46,15 @@
                 <li><a href="#"><span class="glyphicon glyphicon-info-sign"></span>帮助文档</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                       aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>管理员
+                       aria-haspopup="true" aria-expanded="false"><span
+                            class="glyphicon glyphicon-user"></span>${currentUser.username}
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">个人中心</a></li>
                         <li><a href="#">修改密码</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">安全退出</a></li>
+                        <%-- 在 LoginController 中处理安全退出--%>
+                        <li><a href="crm/quit">安全退出</a></li>
                     </ul>
                 </li>
             </ul>

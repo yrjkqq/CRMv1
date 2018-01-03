@@ -10,12 +10,16 @@ public interface UserService {
 
     List<User> queryOnePage(int startRow, int pageRow);
 
-    void deleteUser(User user);
-
     User queryUserById(int id);
+
+    User queryUserByName(String name);
+
+    void deleteUser(User user);
 
     void modifyUser(User user);
 
     void addUser(User user);
+
+    void allocateRole(int id, Integer[] roles);
 
 }

@@ -10,9 +10,9 @@ public interface ResourceService {
 
     List<Resource> queryResourceOnePage(int startRow, int pageRow);
 
-    void deleteResource(Resource cr);
-
     Resource queryResourceById(int id);
+
+    void deleteResource(Resource cr);
 
     void modifyResource(Resource resource);
 
