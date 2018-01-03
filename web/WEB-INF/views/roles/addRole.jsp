@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="panel-body">
-                    <form action="crm/addRole" method="post" class="form-horizontal">
+                    <form action="roles/addRole" method="post" class="form-horizontal">
 
                         <div class="form-group">
                             <label class="control-label col-md-2">角色名</label>

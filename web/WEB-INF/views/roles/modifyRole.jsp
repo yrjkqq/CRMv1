@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="panel-body">
-                    <form action="crm/modifyRole" method="post" class="form-horizontal">
+                    <form action="roles/modifyRole" method="post" class="form-horizontal">
 
                         <div class="form-group">
                             <label class="control-label col-md-2">ID</label>

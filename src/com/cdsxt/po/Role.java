@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "crm_role")
-public class CrmRole {
+public class Role {
 
 
     private String constant;
@@ -15,15 +15,14 @@ public class CrmRole {
     private Byte enabled;
 
     @Id
-    @SequenceGenerator(name = "RoleGen", sequenceName = "seq_crm_role")
-    @GeneratedValue(generator = "RoleGen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
 
-    // 保存用户的集合: 由 CrmUser 维护关系
+    // 保存用户的集合: 由 User 维护关系
     @ManyToMany(mappedBy = "roles")
-    private Set<CrmUser> users = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 
     // 保存资源的集合: 维护主键
     @ManyToMany
@@ -36,19 +35,19 @@ public class CrmRole {
                     @JoinColumn(name = "resource_id")
             }
     )
-    private Set<CrmResource> resources = new HashSet<>();
+    private Set<Resource> resources = new HashSet<>();
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CrmRole crmRole = (CrmRole) o;
-        return Objects.equals(constant, crmRole.constant) &&
-                Objects.equals(description, crmRole.description) &&
-                Objects.equals(enabled, crmRole.enabled) &&
-                Objects.equals(id, crmRole.id) &&
-                Objects.equals(name, crmRole.name);
+        Role role = (Role) o;
+        return Objects.equals(constant, role.constant) &&
+                Objects.equals(description, role.description) &&
+                Objects.equals(enabled, role.enabled) &&
+                Objects.equals(id, role.id) &&
+                Objects.equals(name, role.name);
     }
 
     @Override
@@ -97,19 +96,19 @@ public class CrmRole {
         this.name = name;
     }
 
-    public Set<CrmUser> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<CrmUser> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
-    public Set<CrmResource> getResources() {
+    public Set<Resource> getResources() {
         return resources;
     }
 
-    public void setResources(Set<CrmResource> resources) {
+    public void setResources(Set<Resource> resources) {
         this.resources = resources;
     }
 }

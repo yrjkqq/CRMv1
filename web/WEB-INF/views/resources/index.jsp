@@ -33,12 +33,12 @@
             <!--当前位置-->
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="crm/resource">首页</a></li>
-                    <li><a href="crm/resource">系统设置</a></li>
+                    <li><a href="resources/index">首页</a></li>
+                    <li><a href="resources/index">系统设置</a></li>
                     <li class="active">资源管理</li>
                 </ol>
             </div>
-            <!--搜索-->
+            <%--<!--搜索-->
             <div class="row">
                 <form action="#">
                     <div class="panel panel-default">
@@ -67,7 +67,7 @@
                     </div>
                 </form>
 
-            </div>
+            </div>--%>
             <!--资源列表-->
             <div class="row">
                 <div class="panel panel-default">
@@ -76,7 +76,7 @@
                         <div class="row">
                             <div class="col-md-4">资源列表</div>
                             <div class="col-md-8 text-right">
-                                <a role="button" href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                <a role="button" class="btn btn-primary btn-sm" data-toggle="modal"
                                    data-target="#myModalToAdd">
                                     <span class="glyphicon glyphicon-plus"></span>&nbsp;添加资源
                                 </a>
@@ -105,7 +105,7 @@
                         </thead>
                         <tbody>
                         <!-- 列表循环 -->
-                        <c:forEach items="${crmResourceList}" var="resource">
+                        <c:forEach items="${resourceList}" var="resource">
                             <tr>
                                 <td>${resource.constant}</td>
                                 <td>${resource.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
@@ -123,7 +123,7 @@
                                        data-target="#myModalToUpdate" onclick="modifyResource(${resource.id})">
                                         <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
                                     </a>
-                                    <a role="button" href="crm/deleteResource/${resource.id}"
+                                    <a role="button" href="resources/deleteResource/${resource.id}"
                                        class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
                                     </a>
@@ -137,7 +137,7 @@
                     <div class="panel-footer">
                         <td colspan="9">
                             <jsp:include page="../commons/page.jsp">
-                                <jsp:param name="url" value="crm/resource"/>
+                                <jsp:param name="url" value="resources/index"/>
                             </jsp:include>
                         </td>
                     </div>
@@ -154,7 +154,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
-            <form action="crm/addResource" method="post" class="form-horizontal">
+            <form action="resources/addResource" method="post" class="form-horizontal">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
@@ -263,7 +263,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
-            <form action="crm/modifyResource" method="post" class="form-horizontal">
+            <form action="resources/modifyResource" method="post" class="form-horizontal">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
@@ -374,32 +374,32 @@
     function modifyResource(resourceId) {
         // 先发出 ajax 请求, 返回原对象, 然后弹出模块框并设置初始值
         $.ajax({
-            url: "crm/modifyResource/" + resourceId,
+            url: "resources/modifyResource/" + resourceId,
             method: "get",
             dateType: "json"
-        }).done(function (crmResource) {
-            $("#id").val(crmResource.id);
-            $("#constant").val(crmResource.constant);
-            $("#href").val(crmResource.href);
-            $("#name").val(crmResource.name);
-            $("#parent").val(crmResource.parent.id);
-            $("#target").val(crmResource.target);
-            $("#title").val(crmResource.title);
+        }).done(function (resource) {
+            $("#id").val(resource.id);
+            $("#constant").val(resource.constant);
+            $("#href").val(resource.href);
+            $("#name").val(resource.name);
+            $("#parent").val(resource.parent.id);
+            $("#target").val(resource.target);
+            $("#title").val(resource.title);
 
             $(".enabled").each(function () {
-                if ($(this).prop("value") == crmResource.enabled) {
+                if ($(this).prop("value") == resource.enabled) {
                     $(this).prop("checked", true);
                 }
             });
 
             $(".shown").each(function () {
-                if ($(this).prop("value") == crmResource.shown) {
+                if ($(this).prop("value") == resource.shown) {
                     $(this).prop("checked", true);
                 }
             });
 
             $(".type").each(function () {
-                if ($(this).prop("value") == crmResource.type) {
+                if ($(this).prop("value") == resource.type) {
                     $(this).prop("checked", true);
                 }
             });

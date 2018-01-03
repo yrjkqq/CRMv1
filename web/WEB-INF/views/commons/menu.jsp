@@ -17,12 +17,13 @@
     <li class="list-group-item">
         <div class="row">
             <ul class="nav nav-pills nav-stacked">
-                <li role="presentation"><a href="crm/${param.target}"><span
+                <li role="presentation"><a href="${param.target}s/index"><span
                         class="glyphicon glyphicon-home"></span>&nbsp;首页</a>
                 </li>
-                <li role="presentation"><a href="crm/${param.target}"><span class="glyphicon glyphicon-th-list"></span>&nbsp;机会管理</a>
+                <li role="presentation"><a href="${param.target}s/index"><span class="glyphicon glyphicon-th-list"></span>&nbsp;机会管理</a>
                 </li>
-                <li role="presentation"><a href="crm/${param.target}"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;营销管理</a>
+                <li role="presentation"><a href="${param.target}s/index"><span
+                        class="glyphicon glyphicon-shopping-cart"></span>&nbsp;营销管理</a>
                 </li>
                 <!-- 注册点击事件, 点击后展开下层菜单, 并改变右侧图标-->
                 <li role="presentation">
@@ -33,16 +34,19 @@
 
                     <div class="col-md-offset-1" id="systemMenu">
                         <ul class="nav nav-pills nav-stacked">
-                            <li role="presentation" class="${param.target == 'main' ? 'active' : ''}"><a href="crm/main"><span
+                            <li role="presentation" class="${param.target == 'user' ? 'active' : ''}"><a
+                                    href="users/index"><span
                                     class="glyphicon glyphicon-user"></span>&nbsp;用户管理</a>
                             </li>
-                            <li role="presentation" class="${param.target == 'role' ? 'active' : ''}"><a href="crm/role"><span
+                            <li role="presentation" class="${param.target == 'role' ? 'active' : ''}"><a
+                                    href="roles/index"><span
                                     class="glyphicon glyphicon-eye-open"></span>&nbsp;角色管理</a>
                             </li>
-                            <li role="presentation" class="${param.target == 'resource' ? 'active' : ''}"><a href="crm/resource"><span
+                            <li role="presentation" class="${param.target == 'resource' ? 'active' : ''}"><a
+                                    href="resources/index"><span
                                     class="glyphicon glyphicon-eye-open"></span>&nbsp;资源管理</a>
                             </li>
-                            <li role="presentation"><a href="crm/${param.target}"><span
+                            <li role="presentation"><a href="${param.target}s/index"><span
                                     class="glyphicon glyphicon-list"></span>&nbsp;菜单管理</a>
                             </li>
                         </ul>

@@ -1,7 +1,7 @@
 package com.cdsxt.dao.impl;
 
-import com.cdsxt.dao.CrmRoleDao;
-import com.cdsxt.po.CrmRole;
+import com.cdsxt.dao.UserDao;
+import com.cdsxt.po.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 @Primary
-public class CrmRoleDaoImpl implements CrmRoleDao {
+public class UserDaoImpl implements UserDao {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -24,38 +24,40 @@ public class CrmRoleDaoImpl implements CrmRoleDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<CrmRole> queryAllRole() {
-        return this.getSession().createQuery("from CrmRole cr").list();
+    public List<User> queryAll() {
+        return this.getSession().createQuery("from User cu").list();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<CrmRole> queryRoleOnePage(int startRow, int pageRow) {
-        Query query = this.getSession().createQuery("from CrmRole");
+    public List<User> queryOnePage(int startRow, int pageRow) {
+        // 实现 oracle 分页查找
+        Query query = this.getSession().createQuery("from User cu");
         query.setFirstResult(startRow);
         query.setMaxResults(pageRow);
         return query.list();
     }
 
     @Override
-    public CrmRole queryRoleById(int id) {
-        return (CrmRole) this.getSession().createQuery("from CrmRole cr where cr.id = :id")
+    public User queryUserById(int id) {
+        return (User) this.getSession().createQuery("from User cu where cu.id = :id")
                 .setInteger("id", id)
                 .uniqueResult();
     }
 
     @Override
-    public void deleteRole(CrmRole crmRole) {
-        this.getSession().delete(crmRole);
+    public void deleteUser(User user) {
+        this.getSession().delete(user);
     }
 
     @Override
-    public void modifyRole(CrmRole crmRole) {
-        this.getSession().update(crmRole);
+    public void modifyUser(User user) {
+        this.getSession().update(user);
     }
 
     @Override
-    public void addRole(CrmRole crmRole) {
-        this.getSession().save(crmRole);
+    public void addUser(User user) {
+        this.getSession().save(user);
     }
+
 }

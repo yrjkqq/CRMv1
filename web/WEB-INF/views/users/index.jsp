@@ -27,15 +27,15 @@
         <!--菜单-->
         <div class="col-md-2">
             <jsp:include page="../commons/menu.jsp">
-                <jsp:param name="target" value="main"/>
+                <jsp:param name="target" value="user"/>
             </jsp:include>
         </div>
         <div class="col-md-10">
             <!--当前位置-->
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="crm/main">首页</a></li>
-                    <li><a href="crm/main">系统设置</a></li>
+                    <li><a href="users/index">首页</a></li>
+                    <li><a href="users/index">系统设置</a></li>
                     <li class="active">用户管理</li>
                 </ol>
             </div>
@@ -104,7 +104,7 @@
                         </thead>
                         <tbody>
                         <!-- 列表循环 -->
-                        <c:forEach items="${crmUserList}" var="user">
+                        <c:forEach items="${userList}" var="user">
                             <tr>
                                 <td>${user.description}</td>
                                 <td>${user.email}</td>
@@ -120,7 +120,7 @@
                                        data-target="#myModalToUpdate" onclick="modifyUser(${user.id})">
                                         <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
                                     </a>
-                                    <a role="button" href="crm/deleteUser/${user.id}" class="btn btn-danger btn-xs">
+                                    <a role="button" href="users/deleteUser/${user.id}" class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
                                     </a>
                                 </td>
@@ -133,7 +133,7 @@
                     <div class="panel-footer">
                         <td colspan="9">
                             <jsp:include page="../commons/page.jsp">
-                                <jsp:param name="url" value="crm/main"/>
+                                <jsp:param name="url" value="users/index"/>
                             </jsp:include>
                         </td>
                     </div>
@@ -150,7 +150,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
-            <form action="crm/addUser" method="post" class="form-horizontal">
+            <form action="users/addUser" method="post" class="form-horizontal">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
@@ -241,7 +241,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
-            <form action="crm/modifyUser" method="post" class="form-horizontal">
+            <form action="users/modifyUser" method="post" class="form-horizontal">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
@@ -339,30 +339,30 @@
     function modifyUser(userId) {
         // 先发出 ajax 请求, 返回原对象, 然后弹出模块框并设置初始值
         $.ajax({
-            url: "crm/modifyUser/" + userId,
+            url: "users/modifyUser/" + userId,
             method: "get",
             dateType: "json"
-        }).done(function (crmUser) {
-            $("#id").val(crmUser.id);
-            $("#description").val(crmUser.description);
-            $("#email").val(crmUser.email);
-            $("#username").val(crmUser.username);
-            $("#password").attr("value", crmUser.password);
+        }).done(function (user) {
+            $("#id").val(user.id);
+            $("#description").val(user.description);
+            $("#email").val(user.email);
+            $("#username").val(user.username);
+            $("#password").attr("value", user.password);
 
             $(".enabled").each(function () {
-                if ($(this).prop("value") == crmUser.enabled) {
+                if ($(this).prop("value") == user.enabled) {
                     $(this).prop("checked", true);
                 }
             });
 
             $(".locked").each(function () {
-                if ($(this).prop("value") == crmUser.locked) {
+                if ($(this).prop("value") == user.locked) {
                     $(this).prop("checked", true);
                 }
             });
 
             $(".sex").each(function () {
-                if ($(this).prop("value") == crmUser.sex) {
+                if ($(this).prop("value") == user.sex) {
                     $(this).prop("checked", true);
                 }
             });

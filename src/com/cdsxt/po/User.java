@@ -9,15 +9,14 @@ import java.util.Set;
 
 @Entity
 @Table(name = "crm_user")
-public class CrmUser {
+public class User {
 
     private String description;
     private String email;
     private Byte enabled;
 
     @Id
-    @SequenceGenerator(name = "UserGen", sequenceName = "seq_crm_user")
-    @GeneratedValue(generator = "UserGen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Byte locked;
@@ -37,21 +36,21 @@ public class CrmUser {
                     @JoinColumn(name = "role_id")
             }
     )
-    private Set<CrmRole> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CrmUser crmUser = (CrmUser) o;
-        return Objects.equals(description, crmUser.description) &&
-                Objects.equals(email, crmUser.email) &&
-                Objects.equals(enabled, crmUser.enabled) &&
-                Objects.equals(id, crmUser.id) &&
-                Objects.equals(locked, crmUser.locked) &&
-                Objects.equals(password, crmUser.password) &&
-                Objects.equals(sex, crmUser.sex) &&
-                Objects.equals(username, crmUser.username);
+        User user = (User) o;
+        return Objects.equals(description, user.description) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(enabled, user.enabled) &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(locked, user.locked) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(sex, user.sex) &&
+                Objects.equals(username, user.username);
     }
 
     @Override
@@ -124,11 +123,11 @@ public class CrmUser {
         this.username = username;
     }
 
-    public Set<CrmRole> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<CrmRole> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 }

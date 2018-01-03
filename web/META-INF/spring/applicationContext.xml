@@ -16,7 +16,7 @@
 
     <!--连接池-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <!-- 基本属性 url、user、password -->
+        <!-- 基本属性 url、index、password -->
         <property name="url" value="${jdbc_url}"/>
         <property name="username" value="${jdbc_user}"/>
         <property name="password" value="${jdbc_password}"/>
@@ -57,7 +57,7 @@
         <property name="hibernateProperties">
             <props>
                 <!--<prop key="hibernate.format_sql">true</prop>-->
-                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <prop key="hibernate.show_sql">true</prop>
                 <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
             </props>
         </property>

@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "crm_resource")
-public class CrmResource {
+public class Resource {
 
     @NotNull(message = "常量不能为空")
     private String constant;
@@ -19,8 +19,7 @@ public class CrmResource {
     private String href;
 
     @Id
-    @SequenceGenerator(name = "ResourceGen", sequenceName = "seq_crm_resource")
-    @GeneratedValue(generator = "ResourceGen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
 
@@ -28,11 +27,11 @@ public class CrmResource {
     // 父结点只有一个
     @ManyToOne
     @JoinColumn(name = "parent")
-    private CrmResource parent;
+    private Resource parent;
     // 子结点有多个
     @OneToMany(mappedBy = "parent")
     @JsonIgnore // 不向页面输出
-    private Set<CrmResource> childResources = new HashSet<>();
+    private Set<Resource> childResources = new HashSet<>();
 
     private Byte shown;
     private String target;
@@ -42,13 +41,13 @@ public class CrmResource {
     // 保存角色的集合: 放弃维护主键
     @ManyToMany(mappedBy = "resources")
     @JsonIgnore // 不向页面输出
-    private Set<CrmRole> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CrmResource that = (CrmResource) o;
+        Resource that = (Resource) o;
         return Objects.equals(constant, that.constant) &&
                 Objects.equals(enabled, that.enabled) &&
                 Objects.equals(href, that.href) &&
@@ -107,19 +106,19 @@ public class CrmResource {
         this.name = name;
     }
 
-    public CrmResource getParent() {
+    public Resource getParent() {
         return parent;
     }
 
-    public void setParent(CrmResource parent) {
+    public void setParent(Resource parent) {
         this.parent = parent;
     }
 
-    public Set<CrmResource> getChildResources() {
+    public Set<Resource> getChildResources() {
         return childResources;
     }
 
-    public void setChildResources(Set<CrmResource> childResources) {
+    public void setChildResources(Set<Resource> childResources) {
         this.childResources = childResources;
     }
 
@@ -155,11 +154,11 @@ public class CrmResource {
         this.type = type;
     }
 
-    public Set<CrmRole> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<CrmRole> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 }

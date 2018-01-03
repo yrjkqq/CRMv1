@@ -50,5 +50,6 @@
     <orderEntry type="library" name="spring-web" level="application" />
     <orderEntry type="library" name="cglib" level="application" />
     <orderEntry type="library" name="validation" level="application" />
+    <orderEntry type="library" name="mysql-connector" level="application" />
   </component>
 </module>

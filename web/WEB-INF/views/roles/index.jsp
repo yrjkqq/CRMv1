@@ -33,8 +33,8 @@
             <!--当前位置-->
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="crm/main">首页</a></li>
-                    <li><a href="crm/role">系统设置</a></li>
+                    <li><a href="roles/index">首页</a></li>
+                    <li><a href="roles/index">系统设置</a></li>
                     <li class="active">角色管理</li>
                 </ol>
             </div>
@@ -74,7 +74,7 @@
                         <div class="row">
                             <div class="col-md-4">角色列表</div>
                             <div class="col-md-8 text-right">
-                                <a role="button" href="crm/addRole" class="btn btn-primary btn-sm">
+                                <a role="button" href="roles/addRole" class="btn btn-primary btn-sm">
                                     <span class="glyphicon glyphicon-plus"></span>&nbsp;添加角色
                                 </a>
                                 <a role="button" href="#" class="btn btn-warning btn-sm">
@@ -97,7 +97,7 @@
                         </thead>
                         <tbody>
                         <!-- 列表循环 -->
-                        <c:forEach items="${crmRoleList}" var="role">
+                        <c:forEach items="${roleList}" var="role">
                             <tr>
                                 <td>${role.constant}</td>
                                 <td>${role.description}</td>
@@ -106,11 +106,11 @@
                                 <td>${role.name}</td>
 
                                 <td>
-                                    <a role="button" href="crm/modifyRole/${role.id}"
+                                    <a role="button" href="roles/modifyRole/${role.id}"
                                        class="btn btn-warning btn-xs">
                                         <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
                                     </a>
-                                    <a role="button" href="crm/deleteRole/${role.id}" class="btn btn-danger btn-xs">
+                                    <a role="button" href="roles/deleteRole/${role.id}" class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
                                     </a>
                                 </td>
@@ -123,7 +123,7 @@
                     <div class="panel-footer">
                         <td colspan="6">
                             <jsp:include page="../commons/page.jsp">
-                                <jsp:param name="url" value="crm/role"/>
+                                <jsp:param name="url" value="roles/index"/>
                             </jsp:include>
                         </td>
                     </div>
