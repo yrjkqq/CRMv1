@@ -17,4 +17,6 @@ public interface RoleService {
     void modifyRole(Role role);
 
     void addRole(Role role);
+
+    void allocateResource(Integer roleId, Integer[] selectedResources);
 }

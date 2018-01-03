@@ -28,10 +28,11 @@ public class LoginFilter implements Filter {
         // 以 /crm/testify 结尾表示为登陆验证, 需要放行
         // 静态资源也需要直接放行
         String url = req.getRequestURL().toString();
-        if (url.endsWith("/crm") || url.endsWith("/crm/testify") || url.endsWith(".js") || url.endsWith(".css") || Objects.nonNull(currentUser)) {
+        if (url.endsWith("/crm") || url.endsWith("/crm/testify") || url.endsWith(".js") || url.endsWith(".css") || url.endsWith(".gif") ||
+                url.endsWith(".png") || url.endsWith(".jpg") || Objects.nonNull(currentUser)) {
             chain.doFilter(request, response);
         } else {
-            resp.getWriter().write("<h3>未登录, 请登陆后使用本系统!</h3>");
+            resp.getWriter().write("<h3>未登录, 请<a href='/crm'>登陆</a>后使用本系统!</h3>");
         }
     }
 
