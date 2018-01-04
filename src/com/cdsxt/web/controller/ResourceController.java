@@ -57,8 +57,7 @@ public class ResourceController {
     @Authorize(value = "SYS_RESOURCE_DELETE")
     @RequestMapping("deleteResource/{id}")
     public String deleteResource(@PathVariable("id") Integer id) {
-        Resource cr = new Resource();
-        cr.setId(id);
+        Resource cr = this.resourceService.queryResourceById(id);
         resourceService.deleteResource(cr);
         return "redirect:/resources/index";
     }

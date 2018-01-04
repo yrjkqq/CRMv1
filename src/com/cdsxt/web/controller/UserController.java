@@ -1,5 +1,6 @@
 package com.cdsxt.web.controller;
 
+import com.cdsxt.exception.DeleteException;
 import com.cdsxt.interceptor.annotation.Authorize;
 import com.cdsxt.po.User;
 import com.cdsxt.service.RoleService;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -57,9 +59,13 @@ public class UserController {
     // 删除用户
     @Authorize(value = "SYS_USER_DELETE")
     @RequestMapping("deleteUser/{id}")
-    public String deleteUser(@PathVariable("id") Integer id) {
-        User user = new User();
-        user.setId(id);
+    public String deleteUser(@PathVariable("id") Integer id, HttpServletRequest request) throws DeleteException {
+        // 判断需要删除的用户 id 和当前登录用户 id 是否相同, 相同表示在删除自己, 不允许操作
+        if (Objects.nonNull(id) && id.equals(((User) request.getSession().getAttribute("currentUser")).getId())) {
+            throw new DeleteException("Stupid!!! 不允许删除自己");
+        }
+
+        User user = this.userService.queryUserById(id);
         userService.deleteUser(user);
         return "redirect:/users/index";
     }

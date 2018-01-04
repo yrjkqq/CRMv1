@@ -38,24 +38,6 @@ public class Role {
     private Set<Resource> resources = new HashSet<>();
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return Objects.equals(constant, role.constant) &&
-                Objects.equals(description, role.description) &&
-                Objects.equals(enabled, role.enabled) &&
-                Objects.equals(id, role.id) &&
-                Objects.equals(name, role.name);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(constant, description, enabled, id, name);
-    }
-
     public String getConstant() {
         return constant;
     }
@@ -110,5 +92,23 @@ public class Role {
 
     public void setResources(Set<Resource> resources) {
         this.resources = resources;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(constant, role.constant) &&
+                Objects.equals(description, role.description) &&
+                Objects.equals(enabled, role.enabled) &&
+                Objects.equals(id, role.id) &&
+                Objects.equals(name, role.name);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(constant, description, enabled, id, name);
     }
 }

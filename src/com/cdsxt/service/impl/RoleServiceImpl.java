@@ -3,6 +3,7 @@ package com.cdsxt.service.impl;
 import com.cdsxt.dao.RoleDao;
 import com.cdsxt.po.Resource;
 import com.cdsxt.po.Role;
+import com.cdsxt.po.User;
 import com.cdsxt.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void deleteRole(Role role) {
+        // 当删除角色时, 如果有用户依赖于该角色, 直接删除角色会出错, 需要先断开联系;
+        Set<User> users = role.getUsers();
+        for (User user : users) {
+            user.getRoles().remove(role);
+        }
         roleDao.deleteRole(role);
     }
 

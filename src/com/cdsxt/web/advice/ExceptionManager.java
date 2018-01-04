@@ -1,6 +1,7 @@
 package com.cdsxt.web.advice;
 
 import com.cdsxt.exception.AuthorizeException;
+import com.cdsxt.exception.DeleteException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +23,16 @@ public class ExceptionManager {
     public ModelAndView validation(AuthorizeException ae) {
         ModelAndView view = new ModelAndView("error/authorizeException");
         view.addObject("tip", ae.getMessage());
+        return view;
+    }
+
+    /**
+     * 处理删除用户异常
+     */
+    @ExceptionHandler(DeleteException.class)
+    public ModelAndView validation(DeleteException de) {
+        ModelAndView view = new ModelAndView("error/deleteException");
+        view.addObject("tip", de.getMessage());
         return view;
     }
 }

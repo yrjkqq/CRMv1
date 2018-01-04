@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <base href="<%=basePath%>">
-    <title>CRM</title>
+    <title>员工管理</title>
     <script src="assets/js/jquery-3.2.1.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -34,8 +34,8 @@
             <!--当前位置-->
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="users/index">首页</a></li>
-                    <li><a href="users/index">系统设置</a></li>
+                    <li><a href="crm/main">首页</a></li>
+                    <li><a href="depts/index">部门管理</a></li>
                     <li class="active">用户管理</li>
                 </ol>
             </div>
@@ -78,7 +78,7 @@
                             <div class="col-md-4">用户列表</div>
                             <div class="col-md-8">
                                 <%--todo 此处的按钮应该是动态获取到当前用户是否有 添加用户 资源, 有才能显示--%>
-                                <a role="button" href="#" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
+                                <a role="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
                                    data-target="#myModalToAdd">
                                     <span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户
                                 </a>

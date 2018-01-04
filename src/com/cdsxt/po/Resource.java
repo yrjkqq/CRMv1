@@ -43,29 +43,6 @@ public class Resource {
     @JsonIgnore // 不向页面输出
     private Set<Role> roles = new HashSet<>();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Resource that = (Resource) o;
-        return Objects.equals(constant, that.constant) &&
-                Objects.equals(enabled, that.enabled) &&
-                Objects.equals(href, that.href) &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(parent, that.parent) &&
-                Objects.equals(shown, that.shown) &&
-                Objects.equals(target, that.target) &&
-                Objects.equals(title, that.title) &&
-                Objects.equals(type, that.type);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(constant, enabled, href, id, name, parent, shown, target, title, type);
-    }
-
     public String getConstant() {
         return constant;
     }
@@ -160,5 +137,28 @@ public class Resource {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resource resource = (Resource) o;
+        return Objects.equals(constant, resource.constant) &&
+                Objects.equals(enabled, resource.enabled) &&
+                Objects.equals(href, resource.href) &&
+                Objects.equals(id, resource.id) &&
+                Objects.equals(name, resource.name) &&
+                Objects.equals(parent, resource.parent) &&
+                Objects.equals(shown, resource.shown) &&
+                Objects.equals(target, resource.target) &&
+                Objects.equals(title, resource.title) &&
+                Objects.equals(type, resource.type);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(constant, enabled, href, id, name, parent, shown, target, title, type);
     }
 }

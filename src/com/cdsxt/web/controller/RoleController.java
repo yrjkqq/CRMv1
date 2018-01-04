@@ -68,8 +68,7 @@ public class RoleController {
     @Authorize(value = "SYS_ROLE_DELETE")
     @RequestMapping("deleteRole/{id}")
     public String deleteRole(@PathVariable("id") Integer id) {
-        Role role = new Role();
-        role.setId(id);
+        Role role = this.roleService.queryRoleById(id);
         roleService.deleteRole(role);
         return "redirect:/roles/index";
     }

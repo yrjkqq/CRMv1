@@ -36,7 +36,7 @@ public class LoginController {
                 // 相等，验证通过，跳转到主页面
                 // 登陆成功之后将 user 对象保存到作用域中
                 request.getSession().setAttribute("currentUser", user);
-                return "redirect:/users/index";
+                return "main";
             } else {
                 // 密码错误
                 model.addAttribute("passwordTip", "密码不正确，请检查输入");
@@ -57,5 +57,11 @@ public class LoginController {
         request.getSession().invalidate();
         // 返回登陆页面
         return "login";
+    }
+
+    // 首页
+    @RequestMapping("main")
+    public String main() {
+        return "main";
     }
 }

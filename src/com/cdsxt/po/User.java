@@ -38,6 +38,11 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
+    // 保存部门对象, 维护主键
+    @ManyToOne
+    @JoinColumn(name = "deptno")
+    private Dept dept;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

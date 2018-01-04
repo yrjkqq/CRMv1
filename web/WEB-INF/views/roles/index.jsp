@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <base href="<%=basePath%>">
-    <title>CRM</title>
+    <title>角色管理</title>
     <script src="assets/js/jquery-3.2.1.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -36,8 +36,8 @@
             <!--当前位置-->
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="roles/index">首页</a></li>
-                    <li><a href="roles/index">系统设置</a></li>
+                    <li><a href="crm/main">首页</a></li>
+                    <li><a href="depts/index">部门管理</a></li>
                     <li class="active">角色管理</li>
                 </ol>
             </div>
@@ -79,9 +79,6 @@
                             <div class="col-md-8 text-right">
                                 <a role="button" href="roles/addRole" class="btn btn-primary btn-sm">
                                     <span class="glyphicon glyphicon-plus"></span>&nbsp;添加角色
-                                </a>
-                                <a role="button" href="#" class="btn btn-warning btn-sm">
-                                    <span class="glyphicon glyphicon-trash"></span>&nbsp;删除选中
                                 </a>
                             </div>
                         </div>

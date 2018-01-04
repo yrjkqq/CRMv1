@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <base href="<%=basePath%>">
-    <title>CRM</title>
+    <title>资源管理</title>
     <script src="assets/js/jquery-3.2.1.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -33,8 +33,8 @@
             <!--当前位置-->
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="resources/index">首页</a></li>
-                    <li><a href="resources/index">系统设置</a></li>
+                    <li><a href="crm/main">首页</a></li>
+                    <li><a href="menus/index">菜单管理</a></li>
                     <li class="active">资源管理</li>
                 </ol>
             </div>
@@ -79,9 +79,6 @@
                                 <a role="button" class="btn btn-primary btn-sm" data-toggle="modal"
                                    data-target="#myModalToAdd">
                                     <span class="glyphicon glyphicon-plus"></span>&nbsp;添加资源
-                                </a>
-                                <a role="button" href="#" class="btn btn-warning btn-sm">
-                                    <span class="glyphicon glyphicon-trash"></span>&nbsp;删除选中
                                 </a>
                             </div>
                         </div>

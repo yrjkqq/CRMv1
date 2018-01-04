@@ -69,7 +69,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <!--根开启注解自动配置-->
+    <!--根据开启注解自动配置-->
     <tx:annotation-driven/>
 
 </beans>
