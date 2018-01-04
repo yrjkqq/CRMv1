@@ -3,6 +3,7 @@ package com.cdsxt.service;
 import com.cdsxt.po.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
@@ -21,5 +22,7 @@ public interface UserService {
     void addUser(User user);
 
     void allocateRole(int id, Integer[] roles);
+
+    Set<String> getAllResourcesByUser(Integer userId);
 
 }

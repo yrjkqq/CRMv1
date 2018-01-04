@@ -1,5 +1,6 @@
 package com.cdsxt.web.controller;
 
+import com.cdsxt.interceptor.annotation.Authorize;
 import com.cdsxt.po.Resource;
 import com.cdsxt.po.Role;
 import com.cdsxt.service.ResourceService;
@@ -29,6 +30,7 @@ public class RoleController {
 
 
     // 查询角色表, 将查询结果以 json 格式返回
+    @Authorize(value = "SYS_ROLE_VIEW")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String index(ModelMap modelMap, @RequestParam(value = "curPage", defaultValue = "1") Integer curPage) throws IOException {
         List<Role> roleList = roleService.queryAllRole();
@@ -46,13 +48,14 @@ public class RoleController {
     /*
     角色管理
      */
-
+    @Authorize(value = "SYS_ROLE_SAVE")
     @RequestMapping(value = "addRole", method = RequestMethod.GET)
     public String addRole() {
         return "roles/addRole";
     }
 
     // 添加角色
+    @Authorize(value = "SYS_ROLE_SAVE")
     @RequestMapping(value = "addRole", method = RequestMethod.POST)
     public String addRole(Role role) {
         // 数据库中插入记录
@@ -62,6 +65,7 @@ public class RoleController {
 
 
     // 删除角色
+    @Authorize(value = "SYS_ROLE_DELETE")
     @RequestMapping("deleteRole/{id}")
     public String deleteRole(@PathVariable("id") Integer id) {
         Role role = new Role();
@@ -71,6 +75,7 @@ public class RoleController {
     }
 
     // 修改角色: 查询角色并返回到修改页面
+    @Authorize(value = "SYS_ROLE_UPDATE")
     @RequestMapping(value = "modifyRole/{id}", method = RequestMethod.GET)
     public String modifyRole(@PathVariable("id") Integer id, ModelMap mp) {
         mp.addAttribute("role", roleService.queryRoleById(id));
@@ -78,6 +83,7 @@ public class RoleController {
     }
 
     // 修改角色: 修改数据库
+    @Authorize(value = "SYS_ROLE_UPDATE")
     @RequestMapping(value = "modifyRole", method = RequestMethod.POST)
     public String modifyRole(Role role) {
         roleService.modifyRole(role);
@@ -85,6 +91,7 @@ public class RoleController {
     }
 
     // 分配资源
+    @Authorize(value = "SYS_ROLE_ALLOC_RESOURCE")
     @RequestMapping(value = "allocateResource/{id}", method = RequestMethod.GET)
     // 返回 json 对象, 其中包括一个角色和多个资源
     @ResponseBody
@@ -106,6 +113,7 @@ public class RoleController {
         }
     }
 
+    @Authorize(value = "SYS_ROLE_ALLOC_RESOURCE")
     @RequestMapping(value = "allocateResource", method = RequestMethod.POST)
     @ResponseBody // 请求会默认去找视图, 找不到则报错;
     public void allocateResource(Integer roleId, Integer[] selectedResources) {

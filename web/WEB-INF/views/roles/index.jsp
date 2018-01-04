@@ -279,7 +279,6 @@
                 result += nodes[i].id + ",";
             }
         }
-        console.log($("#roleId").data("roleId"));
         // 发出 ajax 请求, 到服务器修改资源
         $.ajax({
             url: "roles/allocateResource",
@@ -289,8 +288,6 @@
                 "roleId": $("#roleId").data("roleId") // 获取元素中存储的数据
             }
         });
-
-
     }
 
 

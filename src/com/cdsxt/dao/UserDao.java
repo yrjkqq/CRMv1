@@ -3,6 +3,7 @@ package com.cdsxt.dao;
 import com.cdsxt.po.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserDao {
 

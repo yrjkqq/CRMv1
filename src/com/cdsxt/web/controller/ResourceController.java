@@ -1,5 +1,6 @@
 package com.cdsxt.web.controller;
 
+import com.cdsxt.interceptor.annotation.Authorize;
 import com.cdsxt.po.Resource;
 import com.cdsxt.service.ResourceService;
 import com.cdsxt.util.PageUtil;
@@ -20,6 +21,7 @@ public class ResourceController {
     private ResourceService resourceService;
 
     // 查询资源表, 全部查询
+    @Authorize(value = "SYS_RESOURCE_VIEW")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String index(ModelMap model, @RequestParam(value = "curPage", defaultValue = "1") Integer curPage) {
         List<Resource> resourceList = resourceService.queryAllResource();
@@ -38,6 +40,7 @@ public class ResourceController {
      */
 
     // 添加资源
+    @Authorize(value = "SYS_RESOURCE_SAVE")
     @RequestMapping(value = "addResource", method = RequestMethod.POST)
     public String addResource(@Validated @ModelAttribute("resource") Resource resource, BindingResult result) {
         if (result.hasErrors()) {
@@ -51,6 +54,7 @@ public class ResourceController {
     }
 
     // 删除资源
+    @Authorize(value = "SYS_RESOURCE_DELETE")
     @RequestMapping("deleteResource/{id}")
     public String deleteResource(@PathVariable("id") Integer id) {
         Resource cr = new Resource();
@@ -60,6 +64,7 @@ public class ResourceController {
     }
 
     // 修改资源: 查询资源并返回 json 对象
+    @Authorize(value = "SYS_RESOURCE_UPDATE")
     @RequestMapping(value = "modifyResource/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Resource modifyResource(@PathVariable("id") Integer id) {
@@ -68,6 +73,7 @@ public class ResourceController {
     }
 
     // 修改资源: 修改数据库
+    @Authorize(value = "SYS_RESOURCE_UPDATE")
     @RequestMapping(value = "modifyResource", method = RequestMethod.POST)
     public String modifyResource(Resource resource) {
         resourceService.modifyResource(resource);
