@@ -50,7 +50,8 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public void modifyResource(Resource resource) {
-        this.getSession().update(resource);
+        // merge()会用"拷贝状态copy the state",也就是属性赋值的直接方法,完成相同id对象的更新,实际就是把内容克隆过去.
+        this.getSession().merge(resource);
     }
 
     @Override

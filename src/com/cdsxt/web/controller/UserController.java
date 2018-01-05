@@ -37,7 +37,6 @@ public class UserController {
         int startRow = page.getStartRow();
         int pageCount = page.getPageRow();
         List<User> userListOnePage = userService.queryOnePage(startRow, pageCount);
-
         modelMap.addAttribute("page", page);
         modelMap.addAttribute("userList", userListOnePage);
         return "users/index";

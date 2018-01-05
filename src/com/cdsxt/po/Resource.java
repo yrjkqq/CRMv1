@@ -28,9 +28,10 @@ public class Resource {
     @ManyToOne
     @JoinColumn(name = "parent")
     private Resource parent;
+
     // 子结点有多个
-    @OneToMany(mappedBy = "parent")
     @JsonIgnore // 不向页面输出
+    @OneToMany(mappedBy = "parent")
     private Set<Resource> childResources = new HashSet<>();
 
     private Byte shown;

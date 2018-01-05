@@ -24,7 +24,7 @@ public class User {
     private Byte sex;
     private String username;
 
-    @JsonIgnore
+    // @JsonIgnore
     // 保存角色集合: 维护主键
     @ManyToMany
     @JoinTable(
@@ -134,5 +134,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Dept getDept() {
+        return dept;
+    }
+
+    public void setDept(Dept dept) {
+        this.dept = dept;
     }
 }

@@ -60,7 +60,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void modifyUser(User user) {
-        this.getSession().update(user);
+        this.getSession().merge(user);
     }
 
     @Override

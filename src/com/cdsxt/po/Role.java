@@ -1,5 +1,7 @@
 package com.cdsxt.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -21,6 +23,7 @@ public class Role {
     private String name;
 
     // 保存用户的集合: 由 User 维护关系
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 

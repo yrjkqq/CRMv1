@@ -17,57 +17,6 @@
 </head>
 
 <body>
-<%--<ul class="list-group">
-    <li class="list-group-item disabled"><span class="glyphicon glyphicon-list"></span>&nbsp;菜单</li>
-    <li class="list-group-item">
-        <div class="row">
-            <ul class="nav nav-pills nav-stacked">
-                <li role="presentation"><a href="${param.target}s/index">
-                    <span class="glyphicon glyphicon-home"></span>&nbsp;首页</a>
-                </li>
-                <li role="presentation"><a href="${param.target}s/index">
-                    <span class="glyphicon glyphicon-th-list"></span>&nbsp;机会管理</a>
-                </li>
-                <li role="presentation"><a href="${param.target}s/index">
-                    <span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;营销管理</a>
-                </li>
-                <!-- 注册点击事件, 点击后展开下层菜单, 并改变右侧图标-->
-                <li role="presentation">
-                    <a onclick="expandSystemMenu()">
-                        <span style="margin-right: 50px;"><span class="glyphicon glyphicon-cog"></span>&nbsp;系统设置</span>
-                        <span id="rightMark" class="glyphicon glyphicon-chevron-left"></span>
-                    </a>
-
-                    <div class="col-md-offset-1" id="systemMenu">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li role="presentation" class="${param.target == 'user' ? 'active' : ''}">
-                                <a href="users/index">
-                                    <span class="glyphicon glyphicon-user"></span>&nbsp;用户管理
-                                </a>
-                            </li>
-                            <li role="presentation" class="${param.target == 'role' ? 'active' : ''}">
-                                <a href="roles/index">
-                                    <span class="glyphicon glyphicon-eye-open"></span>&nbsp;角色管理
-                                </a>
-                            </li>
-                            <li role="presentation" class="${param.target == 'resource' ? 'active' : ''}">
-                                <a href="resources/index">
-                                    <span class="glyphicon glyphicon-eye-open"></span>&nbsp;资源管理
-                                </a>
-                            </li>
-                            <li role="presentation">
-                                <a href="${param.target}s/index">
-                                    <span class="glyphicon glyphicon-list"></span>&nbsp;菜单管理
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-    </li>
-</ul>--%>
 
 <div class="list-group">
     <a class="list-group-item disabled">
@@ -116,18 +65,6 @@
 </body>
 </html>
 <script>
-    function expandSystemMenu() {
-        var $systemMenu = $("#systemMenu");
-        var $rightMark = $("#rightMark");
-        if ($systemMenu.css("display") === "none") {
-            $systemMenu.css("display", "block");
-            // 改变右侧图标为向下箭头
-            $rightMark.attr("class", "glyphicon glyphicon-chevron-down");
-        } else {
-            $systemMenu.css("display", "none");
-            $rightMark.attr("class", "glyphicon glyphicon-chevron-left")
-        }
-    }
 
     // 隐藏子结点
     function hideChild(parentName, event, obj) {

@@ -89,14 +89,15 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>备注</th>
-                            <th>邮箱</th>
-                            <th>是否可用</th>
-                            <th>主键</th>
-                            <th>是否锁定</th>
+                            <th>编号</th>
+                            <th>用户名</th>
                             <th>密码</th>
                             <th>性别</th>
-                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>备注</th>
+                            <th>是否可用</th>
+                            <th>是否锁定</th>
+                            <th>所属部门</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -104,16 +105,17 @@
                         <!-- 列表循环 -->
                         <c:forEach items="${userList}" var="user">
                             <tr>
-                                <td>${user.description}</td>
-                                <td>${user.email}</td>
-                                <td>${user.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
                                 <td>${user.id}</td>
-                                <td>${user.locked == 1 ? '<span class="label label-primary">锁定</span>' : '<span class="label label-danger">未锁定</span>'}</td>
+                                <td>${user.username}</td>
                                 <td>${user.password}</td>
                                 <td>${user.sex == 1 ? '男' : '女'}</td>
-                                <td>${user.username}</td>
+                                <td>${user.email}</td>
+                                <td>${user.description}</td>
+                                <td>${user.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
+                                <td>${user.locked == 1 ? '<span class="label label-primary">锁定</span>' : '<span class="label label-danger">未锁定</span>'}</td>
+                                <td>${user.dept.name}</td>
                                 <td>
-                                    <%--增加分配角色按钮--%>
+                                        <%--增加分配角色按钮--%>
                                     <a role="button" href="users/allocateRole/${user.id}" class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-trash"></span>&nbsp;分配角色
                                     </a>
@@ -187,6 +189,13 @@
                         <label class="control-label col-md-2">邮箱</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="email"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">所属部门</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="dept.id"/>
                         </div>
                     </div>
 
@@ -289,6 +298,13 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="control-label col-md-2">所属部门</label>
+                        <div class="col-md-10">
+                            <input type="text" id="dept" class="form-control" name="dept.id"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="control-label col-md-2">性别</label>
                         <div class="col-md-10">
                             <label class="radio-inline">
@@ -345,9 +361,11 @@
             method: "get",
             dateType: "json"
         }).done(function (user) {
+            console.log(user);
             $("#id").val(user.id);
             $("#description").val(user.description);
             $("#email").val(user.email);
+            $("#dept").val(user.dept.id);
             $("#username").val(user.username);
             $("#password").attr("value", user.password);
 

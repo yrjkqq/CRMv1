@@ -51,7 +51,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public void modifyRole(Role role) {
-        this.getSession().update(role);
+        this.getSession().merge(role);
     }
 
     @Override

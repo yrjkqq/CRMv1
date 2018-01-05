@@ -45,7 +45,6 @@ public class ResourceController {
     public String addResource(@Validated @ModelAttribute("resource") Resource resource, BindingResult result) {
         if (result.hasErrors()) {
             // 有错误
-            System.out.println("出错");
             return "redirect:/resources/index";
         }
         // 数据库中插入记录

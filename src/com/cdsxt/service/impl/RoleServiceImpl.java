@@ -49,6 +49,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void modifyRole(Role role) {
+        // 修改角色之前, 先设置资源集合, 避免丢失资源信息
+        role.setResources(this.roleDao.queryRoleById(role.getId()).getResources());
         roleDao.modifyRole(role);
     }
 
@@ -64,6 +66,7 @@ public class RoleServiceImpl implements RoleService {
         Role role = this.roleDao.queryRoleById(roleId);
         Set<Resource> resources = role.getResources();
         resources.clear();
+
         for (Integer i : selectedResources) {
             Resource resource = new Resource();
             resource.setId(i);

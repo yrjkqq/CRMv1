@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -49,6 +50,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void modifyUser(User user) {
+        // 修改其用户之前先设置角色集合, 避免丢失角色信息
+        user.setRoles(userDao.queryUserById(user.getId()).getRoles());
         userDao.modifyUser(user);
     }
 
@@ -71,10 +74,13 @@ public class UserServiceImpl implements UserService {
         User user = userDao.queryUserById(id);
         Set<Role> originalRoles = user.getRoles();
         originalRoles.clear();
-        for (Integer i : roles) {
-            Role role = new Role();
-            role.setId(i);
-            originalRoles.add(role);
+        // 如果页面传入的是空数组, 报错
+        if (Objects.nonNull(roles)) {
+            for (Integer i : roles) {
+                Role role = new Role();
+                role.setId(i);
+                originalRoles.add(role);
+            }
         }
     }
 

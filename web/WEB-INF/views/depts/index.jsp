@@ -159,7 +159,7 @@
         <div class="modal-content">
 
             <form action="depts/modifyDept" method="post" class="form-horizontal">
-
+                <input type="hidden" name="company" value="康帅博"/>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close"><span
