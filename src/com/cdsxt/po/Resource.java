@@ -12,7 +12,7 @@ import java.util.Set;
 @Table(name = "crm_resource")
 public class Resource {
 
-    @NotNull(message = "常量不能为空")
+    // @NotNull(message = "常量不能为空")
     private String constant;
 
     private Byte enabled;
@@ -161,5 +161,23 @@ public class Resource {
     public int hashCode() {
 
         return Objects.hash(constant, enabled, href, id, name, parent, shown, target, title, type);
+    }
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "constant='" + constant + '\'' +
+                ", enabled=" + enabled +
+                ", href='" + href + '\'' +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", parent=" + parent +
+                ", childResources=" + childResources +
+                ", shown=" + shown +
+                ", target='" + target + '\'' +
+                ", title='" + title + '\'' +
+                ", type=" + type +
+                ", roles=" + roles +
+                '}';
     }
 }

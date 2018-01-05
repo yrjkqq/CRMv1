@@ -28,7 +28,7 @@ public class Role {
     private Set<User> users = new HashSet<>();
 
     // 保存资源的集合: 维护主键
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "crm_role_resource",
             joinColumns = {
@@ -113,5 +113,18 @@ public class Role {
     public int hashCode() {
 
         return Objects.hash(constant, description, enabled, id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "constant='" + constant + '\'' +
+                ", description='" + description + '\'' +
+                ", enabled=" + enabled +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", users=" + users +
+                ", resources=" + resources +
+                '}';
     }
 }

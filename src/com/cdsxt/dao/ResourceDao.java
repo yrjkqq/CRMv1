@@ -8,7 +8,11 @@ public interface ResourceDao {
 
     List<Resource> queryAllResource();
 
+    List<Resource> queryAllResourceWithMenu();
+
     List<Resource> queryResourceOnePage(int startRow, int pageRow);
+
+    List<Resource> queryResourceOnePageWithMenu(int startRow, int pageRow);
 
     void deleteResource(Resource cr);
 

@@ -26,7 +26,9 @@
         <!--菜单-->
         <div class="col-md-2">
             <jsp:include page="../commons/menu.jsp">
-                <jsp:param name="target" value="resource"/>
+                <jsp:param name="target" value="resources/index"/>
+                <jsp:param name="name" value="菜单管理"/>
+                <jsp:param name="show" value="show"/>
             </jsp:include>
         </div>
         <div class="col-md-10">
@@ -102,25 +104,25 @@
                         </thead>
                         <tbody>
                         <!-- 列表循环 -->
-                        <c:forEach items="${resourceList}" var="resource">
+                        <c:forEach items="${resourceList}" var="menu">
                             <tr>
-                                <td>${resource.constant}</td>
-                                <td>${resource.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
-                                <td>${resource.href}</td>
-                                <td>${resource.id}</td>
-                                <td>${resource.name}</td>
-                                <td>${resource.parent.id}</td>
-                                <td>${resource.shown == 1 ? '<span class="label label-primary">显示</span>' : '<span class="label label-danger">不显示</span>'}</td>
-                                <td>${resource.target}</td>
-                                <td>${resource.title}</td>
-                                <td>${resource.type == 2 ? '<span class="label label-primary">资源</span>' : '<span class="label label-danger">功能</span>'}</td>
+                                <td>${menu.constant}</td>
+                                <td>${menu.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
+                                <td>${menu.href}</td>
+                                <td>${menu.id}</td>
+                                <td>${menu.name}</td>
+                                <td>${menu.parent.id}</td>
+                                <td>${menu.shown == 1 ? '<span class="label label-primary">显示</span>' : '<span class="label label-danger">不显示</span>'}</td>
+                                <td>${menu.target}</td>
+                                <td>${menu.title}</td>
+                                <td>${menu.type == 2 ? '<span class="label label-primary">资源</span>' : '<span class="label label-danger">功能</span>'}</td>
                                 <td>
                                     <a role="button" href="#"
                                        class="btn btn-warning btn-xs" data-toggle="modal"
-                                       data-target="#myModalToUpdate" onclick="modifyResource(${resource.id})">
+                                       data-target="#myModalToUpdate" onclick="modifyResource(${menu.id})">
                                         <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
                                     </a>
-                                    <a role="button" href="resources/deleteResource/${resource.id}"
+                                    <a role="button" href="resources/deleteResource/${menu.id}"
                                        class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
                                     </a>
@@ -379,7 +381,7 @@
             $("#constant").val(resource.constant);
             $("#href").val(resource.href);
             $("#name").val(resource.name);
-            $("#parent").val(resource.parent.id);
+            $("#parent").val(resource.parent == null ? null : resource.parent.id);
             $("#target").val(resource.target);
             $("#title").val(resource.title);
 

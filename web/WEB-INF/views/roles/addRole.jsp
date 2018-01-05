@@ -24,7 +24,9 @@
         <!--菜单-->
         <div class="col-md-2">
             <jsp:include page="../commons/menu.jsp">
-                <jsp:param name="target" value="role"/>
+                <jsp:param name="target" value="roles/index"/>
+                <jsp:param name="name" value="部门管理"/>
+                <jsp:param name="show" value="show"/>
             </jsp:include>
         </div>
         <div class="col-md-10">

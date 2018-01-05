@@ -1,7 +1,25 @@
+<%@ page import="com.cdsxt.po.Role" %>
+<%@ page import="com.cdsxt.po.User" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.Set" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    User currentUser = (User) request.getSession().getAttribute("currentUser");
+    Set<Role> currentUserRoles = currentUser.getRoles();
+    // 保存最长的集合即可
+    int count = 0;
+    Iterator<Role> iterator = currentUserRoles.iterator();
+    while (iterator.hasNext()) {
+        Role role = iterator.next();
+        int tmp = role.getResources().size();
+        if (tmp > count) {
+            count = tmp;
+        }
+    }
+    request.setAttribute("count", count);
 %>
 
 <!DOCTYPE HTML>
@@ -22,43 +40,50 @@
     <a class="list-group-item disabled">
         <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;<strong>菜单</strong>
     </a>
-    <a href="crm/main" class="list-group-item">
+    <a href="crm/main" class="list-group-item ${param.target == 'main' ? 'active' : ''}">
         <span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;首页
     </a>
-    <a href="crm/main" class="list-group-item" onclick="hideChild('company', event, this)">
-        <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;公司管理
-        <span class="glyphicon glyphicon-plus-sign pull-right"></span>
-    </a>
+    <c:forEach items="${currentUser.roles}" var="role">
+        <%--选取出最大的集合显示即可--%>
+        <c:if test="${role.resources.size() == requestScope.count}">
+            <c:forEach items="${role.resources}" var="menu">
 
-    <a href="depts/index" class="list-group-item" onclick="hideChild('dept', event, this)">
-        <span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;部门管理
-        <span class="glyphicon glyphicon-plus-sign pull-right"></span>
-    </a>
-    <%--属于同一个父节点的子结点使用相同的 name --%>
-    <a href="users/index" class="list-group-item" name="dept">
-        <div class="col-md-offset-1">
-            <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;用户管理
-        </div>
-    </a>
-    <a href="roles/index" class="list-group-item" name="dept">
-        <div class="col-md-offset-1">
-            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;角色管理
-        </div>
-    </a>
+                <%--管理资源需要显示--%>
+                <c:if test="${menu.type == 1}">
 
-    <a href="menus/index" class="list-group-item" onclick="hideChild('menu', event, this)">
-        <span class="glyphicon glyphicon-object-align-left"></span>&nbsp;&nbsp;菜单管理
-        <span class="glyphicon glyphicon-plus-sign pull-right"></span>
-    </a>
-    <a href="resources/index" class="list-group-item" name="menu">
-        <div class="col-md-offset-1">
-            <span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;资源管理
-        </div>
-    </a>
+                    <%--父节点为空, 为根节点; 有点击事件&ndash;%&gt;
+                    父节点不为空, 为子结点; 有 name 属性, 用于展开菜单--%>
+                    <c:if test="${menu.parent == null}">
+                        <a href="${menu.href}"
+                           class="list-group-item ${param.target == menu.href ? 'active' : ''}"
+                           onclick="hideChild('${menu.id}', event, this)">
+                            <span class="${menu.title}"></span>&nbsp;&nbsp;${menu.name}
+                            <span class="glyphicon glyphicon-plus-sign pull-right"></span>
+                        </a>
 
-    <a href="#" class="list-group-item">
-        <span class="glyphicon glyphicon-earphone"></span>&nbsp;&nbsp;服务管理
-    </a>
+                        <%--获取所有子节点, 并显示--%>
+                        <c:forEach items="${role.resources}" var="resource1">
+                            <c:if test="${resource1.parent.id == menu.id}">
+                                <a href="${resource1.href}"
+                                   class="list-group-item ${param.target == resource1.href ? 'active' : ''}
+                                  ${param.show == 'show' && param.name == resource1.parent.name ? '' : 'hide'} "
+                                   name="${resource1.parent.id}">
+                                    <div class="col-md-offset-1">
+                                        <span class="${resource1.title}"></span>&nbsp;&nbsp;${resource1.name}
+                                    </div>
+                                </a>
+                            </c:if>
+                        </c:forEach>
+
+                    </c:if>
+
+                </c:if>
+
+            </c:forEach>
+        </c:if>
+
+    </c:forEach>
+
 </div>
 
 
@@ -67,8 +92,13 @@
 <script>
 
     // 隐藏子结点
-    function hideChild(parentName, event, obj) {
-        $("a[name=" + parentName + "]").each(function () {
+    function hideChild(parentId, event, obj) {
+
+        // 如果当前菜单已经选中, 则阻止提交
+        if ($(obj).hasClass("active")) {
+            event.preventDefault();
+        }
+        $("a[name=" + parentId + "]").each(function () {
             $(this).toggleClass("hide");
             // 改变右侧图标
             var mark = $(this).hasClass("hide") ? "plus" : "minus";

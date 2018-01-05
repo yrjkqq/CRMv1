@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -25,6 +26,11 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
+    public List<Resource> queryAllResourceWithMenu() {
+        return resourceDao.queryAllResourceWithMenu();
+    }
+
+    @Override
     public Resource queryResourceById(int id) {
         return resourceDao.queryResourceById(id);
     }
@@ -32,6 +38,11 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<Resource> queryResourceOnePage(int startRow, int pageRow) {
         return resourceDao.queryResourceOnePage(startRow, pageRow);
+    }
+
+    @Override
+    public List<Resource> queryResourceOnePageWithMenu(int startRow, int pageRow) {
+        return resourceDao.queryResourceOnePageWithMenu(startRow, pageRow);
     }
 
     @Override
@@ -48,12 +59,20 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void modifyResource(Resource resource) {
+        // 父节点的 id 如果为 null, 则设置 null
+        if (Objects.isNull(resource.getParent().getId())) {
+            resource.setParent(null);
+        }
         resourceDao.modifyResource(resource);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void addResource(Resource resource) {
+        // 父节点的 id 如果为 null, 则设置 null
+        if (Objects.isNull(resource.getParent().getId())) {
+            resource.setParent(null);
+        }
         resourceDao.addResource(resource);
     }
 

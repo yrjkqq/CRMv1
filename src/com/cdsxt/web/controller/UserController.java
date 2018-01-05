@@ -2,6 +2,7 @@ package com.cdsxt.web.controller;
 
 import com.cdsxt.exception.DeleteException;
 import com.cdsxt.interceptor.annotation.Authorize;
+import com.cdsxt.po.Role;
 import com.cdsxt.po.User;
 import com.cdsxt.service.RoleService;
 import com.cdsxt.service.UserService;
@@ -113,8 +114,20 @@ public class UserController {
      */
     @Authorize(value = "SYS_USER_ALLOC_ROLE")
     @RequestMapping(value = "allocateRole/{id}", method = RequestMethod.POST)
-    public String allocateRole(@PathVariable("id") Integer id, Integer[] roles) {
+    public String allocateRole(@PathVariable("id") Integer id, Integer[] roles, HttpServletRequest request) {
         this.userService.allocateRole(id, roles);
+        // 如果修改的是当前登陆用户, 则同步修改当前 session 中的登录用户信息
+        User currentUser = (User) request.getSession().getAttribute("currentUser");
+        if (Objects.nonNull(currentUser) && currentUser.getId().equals(id)) {
+            Set<Role> currentUserRoles = currentUser.getRoles();
+            // 清空原角色集合
+            currentUserRoles.clear();
+            Set<Role> newRoles = this.userService.queryUserById(id).getRoles();
+            for (Role role : newRoles) {
+                Role newRole = this.roleService.queryRoleById(role.getId());
+                currentUserRoles.add(newRole);
+            }
+        }
         return "redirect:/users/index";
     }
 

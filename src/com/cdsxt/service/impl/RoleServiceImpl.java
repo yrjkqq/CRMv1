@@ -60,13 +60,13 @@ public class RoleServiceImpl implements RoleService {
         roleDao.addRole(role);
     }
 
+    // 分配资源
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void allocateResource(Integer roleId, Integer[] selectedResources) {
         Role role = this.roleDao.queryRoleById(roleId);
         Set<Resource> resources = role.getResources();
         resources.clear();
-
         for (Integer i : selectedResources) {
             Resource resource = new Resource();
             resource.setId(i);

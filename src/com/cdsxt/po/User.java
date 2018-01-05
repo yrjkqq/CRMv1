@@ -26,7 +26,7 @@ public class User {
 
     // @JsonIgnore
     // 保存角色集合: 维护主键
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "crm_user_role",
             joinColumns = {
@@ -142,5 +142,21 @@ public class User {
 
     public void setDept(Dept dept) {
         this.dept = dept;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "description='" + description + '\'' +
+                ", email='" + email + '\'' +
+                ", enabled=" + enabled +
+                ", id=" + id +
+                ", locked=" + locked +
+                ", password='" + password + '\'' +
+                ", sex=" + sex +
+                ", username='" + username + '\'' +
+                ", roles=" + roles +
+                ", dept=" + dept +
+                '}';
     }
 }

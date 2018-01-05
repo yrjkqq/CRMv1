@@ -26,8 +26,11 @@
     <div class="row">
         <!--菜单-->
         <div class="col-md-2">
+            <%--部门跳转后需要显示子菜单--%>
             <jsp:include page="../commons/menu.jsp">
-                <jsp:param name="target" value="user"/>
+                <jsp:param name="target" value="depts/index"/>
+                <jsp:param name="name" value="部门管理"/>
+                <jsp:param name="show" value="show"/>
             </jsp:include>
         </div>
         <div class="col-md-10">

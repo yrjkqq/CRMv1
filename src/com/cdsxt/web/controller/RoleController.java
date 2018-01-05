@@ -3,8 +3,10 @@ package com.cdsxt.web.controller;
 import com.cdsxt.interceptor.annotation.Authorize;
 import com.cdsxt.po.Resource;
 import com.cdsxt.po.Role;
+import com.cdsxt.po.User;
 import com.cdsxt.service.ResourceService;
 import com.cdsxt.service.RoleService;
+import com.cdsxt.service.UserService;
 import com.cdsxt.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @RequestMapping("roles")
@@ -27,6 +27,9 @@ public class RoleController {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    private UserService userService;
 
 
     // 查询角色表, 将查询结果以 json 格式返回
@@ -115,8 +118,20 @@ public class RoleController {
     @Authorize(value = "SYS_ROLE_ALLOC_RESOURCE")
     @RequestMapping(value = "allocateResource", method = RequestMethod.POST)
     @ResponseBody // 请求会默认去找视图, 找不到则报错;
-    public void allocateResource(Integer roleId, Integer[] selectedResources) {
+    public void allocateResource(Integer roleId, Integer[] selectedResources, HttpServletRequest request) {
         this.roleService.allocateResource(roleId, selectedResources);
+
+        // 重新分配资源后, 强制 session 失效, 然后退出重新登陆
+        // 只有当前用户分配, 才需要强制退出
+        User currentUser = (User) request.getSession().getAttribute("currentUser");
+        if (Objects.nonNull(currentUser)) {
+            Set<Role> currentUserRoles = currentUser.getRoles();
+            for (Role userRole : currentUserRoles) {
+                if (userRole.getId().equals(roleId)) {
+                    request.getSession().invalidate();
+                }
+            }
+        }
     }
 
 }

@@ -28,12 +28,8 @@
         <!--菜单-->
         <div class="col-md-2">
             <jsp:include page="commons/menu.jsp">
-                <jsp:param name="main" value="crm/main"/>
-                <jsp:param name="depts" value="depts/index"/>
-                <jsp:param name="users" value="users/index"/>
-                <jsp:param name="roles" value="roles/index"/>
-                <jsp:param name="menus" value="menus/index"/>
-                <jsp:param name="resources" value="resources/index"/>
+                <jsp:param name="target" value="main"/>
+                <jsp:param name="show" value=""/>
             </jsp:include>
         </div>
         <div class="col-md-10">

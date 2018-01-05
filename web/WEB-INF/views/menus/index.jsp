@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <base href="<%=basePath%>">
-    <title>员工管理</title>
+    <title>菜单管理</title>
     <script src="assets/js/jquery-3.2.1.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -24,12 +24,12 @@
     </div>
 
     <div class="row">
-        <!--菜单; 点击后, 打开新页面, 选中当前菜单, 且显示子菜单-->
-        <%--等于链接名称则选中--%>
+        <!--菜单-->
         <div class="col-md-2">
+            <%--部门跳转后需要显示子菜单--%>
             <jsp:include page="../commons/menu.jsp">
-                <jsp:param name="target" value="users/index"/>
-                <jsp:param name="name" value="部门管理"/>
+                <jsp:param name="target" value="menus/index"/>
+                <jsp:param name="name" value="菜单管理"/>
                 <jsp:param name="show" value="show"/>
             </jsp:include>
         </div>
@@ -38,52 +38,21 @@
             <div class="row">
                 <ol class="breadcrumb">
                     <li><a href="crm/main">首页</a></li>
-                    <li><a href="depts/index">部门管理</a></li>
-                    <li class="active">用户管理</li>
+                    <li class="active"><a href="menus/index">菜单管理</a></li>
                 </ol>
             </div>
-            <!--搜索-->
-            <div class="row">
-                <form action="#">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" style="padding-bottom: 5px; padding-top: 5px">
-                            <div class="row">
-                                <div class="col-md-4">搜索条件</div>
-                                <div class="col-md-8 text-right">
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="modifyUser(document.getElementById('searchContent').value)"
-                                            data-toggle="modal"
-                                            data-target="#myModalToUpdate">
-                                        <span class="glyphicon glyphicon-search"></span>&nbsp;搜索
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeContent()">
-                                        <!-- 注册事件, 清除搜索框内容-->
-                                        <span class="glyphicon glyphicon-remove"></span>&nbsp;清除条件
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-body" style="padding:0">
-                            <input id="searchContent" type="text" class="form-control" style="border:none;"
-                                   name="search"
-                                   placeholder="请输入用户 ID ...">
-                        </div>
-                    </div>
-                </form>
 
-            </div>
-            <!--用户列表-->
+            <!--菜单列表-->
             <div class="row">
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
                     <div class="panel-heading" style="padding-bottom: 5px; padding-top: 5px">
                         <div class="row">
-                            <div class="col-md-4">用户列表</div>
+                            <div class="col-md-4">菜单列表</div>
                             <div class="col-md-8">
-                                <%--todo 此处的按钮应该是动态获取到当前用户是否有 添加用户 资源, 有才能显示--%>
                                 <a role="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
                                    data-target="#myModalToAdd">
-                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户
+                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;添加菜单
                                 </a>
                             </div>
                         </div>
@@ -92,55 +61,55 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>编号</th>
-                            <th>用户名</th>
-                            <th>密码</th>
-                            <th>性别</th>
-                            <th>邮箱</th>
-                            <th>备注</th>
+                            <th>常量</th>
                             <th>是否可用</th>
-                            <th>是否锁定</th>
-                            <th>所属部门</th>
+                            <th>链接地址</th>
+                            <th>主键</th>
+                            <th>菜单名称</th>
+                            <th>父节点</th>
+                            <th>是否显示</th>
+                            <th>打开方式</th>
+                            <th>显示信息</th>
+                            <th>类型</th>
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <!-- 列表循环 -->
-                        <c:forEach items="${userList}" var="user">
+
+                        <c:forEach items="${menuList}" var="menu">
                             <tr>
-                                <td>${user.id}</td>
-                                <td>${user.username}</td>
-                                <td>${user.password}</td>
-                                <td>${user.sex == 1 ? '男' : '女'}</td>
-                                <td>${user.email}</td>
-                                <td>${user.description}</td>
-                                <td>${user.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
-                                <td>${user.locked == 1 ? '<span class="label label-primary">锁定</span>' : '<span class="label label-danger">未锁定</span>'}</td>
-                                <td>${user.dept.name}</td>
+                                <td>${menu.constant}</td>
+                                <td>${menu.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
+                                <td>${menu.href}</td>
+                                <td>${menu.id}</td>
+                                <td>${menu.name}</td>
+                                <td>${menu.parent.id}</td>
+                                <td>${menu.shown == 1 ? '<span class="label label-primary">显示</span>' : '<span class="label label-danger">不显示</span>'}</td>
+                                <td>${menu.target}</td>
+                                <td>${menu.title}</td>
+                                <td>${menu.type == 2 ? '<span class="label label-primary">资源</span>' : '<span class="label label-danger">功能</span>'}</td>
                                 <td>
-                                        <%--增加分配角色按钮--%>
-                                    <a role="button" href="users/allocateRole/${user.id}" class="btn btn-danger btn-xs">
-                                        <span class="glyphicon glyphicon-trash"></span>&nbsp;分配角色
+                                    <a role="button" href="#" class="btn btn-warning btn-xs">
+                                        <span class="glyphicon glyphicon-edit"></span>&nbsp;权限匹配
                                     </a>
-                                    <a role="button"
+                                    <a role="button" href="#"
                                        class="btn btn-warning btn-xs" data-toggle="modal"
-                                       data-target="#myModalToUpdate" onclick="modifyUser(${user.id})">
+                                       data-target="#myModalToUpdate" onclick="modifyResource(${menu.id})">
                                         <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
                                     </a>
-                                    <a role="button" href="users/deleteUser/${user.id}" class="btn btn-danger btn-xs">
+                                    <a role="button" href="resources/deleteResource/${menu.id}" class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
                                     </a>
                                 </td>
 
                             </tr>
                         </c:forEach>
-                        </tbody>
+
                     </table>
                     <%--分页--%>
                     <div class="panel-footer">
                         <td colspan="9">
                             <jsp:include page="../commons/page.jsp">
-                                <jsp:param name="url" value="users/index"/>
+                                <jsp:param name="url" value="menus/index"/>
                             </jsp:include>
                         </td>
                     </div>
@@ -150,80 +119,77 @@
     </div>
 </div>
 
-
-<!--动态模态框, 添加用户-->
+<!--动态模态框, 添加菜单, 等同于添加资源-->
 <!-- Modal -->
 <div class="modal fade" id="myModalToAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
-            <form action="users/addUser" method="post" class="form-horizontal">
+            <form action="resources/addResource" method="post" class="form-horizontal">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel1">添加用户</h4>
+                    <h4 class="modal-title" id="myModalLabel1">添加菜单</h4>
                 </div>
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">用户名</label>
+                        <label class="control-label col-md-2">常量</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="username"/>
+                            <%--todo 唯一性约束--%>
+                            <input type="text" class="form-control" name="constant"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">密码</label>
+                        <label class="control-label col-md-2">链接地址</label>
                         <div class="col-md-10">
-                            <input type="password" class="form-control" name="password"/>
+                            <input type="text" class="form-control" name="href"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">备注</label>
+                        <label class="control-label col-md-2">资源名称</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="description"/>
+                            <input type="text" class="form-control" name="name"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">邮箱</label>
+                        <label class="control-label col-md-2">父节点</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="email"/>
+                            <%--name 属性为 int 必须有值; 先改为 Integer 包装类--%>
+                            <%--todo 验证--%>
+                            <input type="text" class="form-control" name="parent.id"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">所属部门</label>
+                        <label class="control-label col-md-2">打开方式</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="dept.id"/>
+                            <input type="text" class="form-control" name="target"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">显示信息</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="title"/>
                         </div>
                     </div>
 
                     <%--主键由数据库生成--%>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">性别</label>
+                        <label class="control-label col-md-2">类型</label>
                         <div class="col-md-10">
                             <label class="radio-inline">
-                                <input type="radio" name="sex" value="1">男
+                                <input type="radio" name="type" value="1">资源
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="sex" value="0">女
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2">是否锁定</label>
-                        <div class="col-md-10">
-                            <label class="radio-inline">
-                                <input type="radio" name="locked" value="1">是
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="locked" value="0">否
+                                <input type="radio" name="type" value="0">功能
                             </label>
                         </div>
                     </div>
@@ -239,6 +205,19 @@
                             </label>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">是否显示</label>
+                        <div class="col-md-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="shown" value="1">是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="shown" value="0">否
+                            </label>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -249,19 +228,19 @@
     </div>
 </div>
 
-<!--动态模态框, 修改用户-->
+<!--动态模态框, 修改资源-->
 <!-- Modal -->
 <div class="modal fade" id="myModalToUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
-            <form action="users/modifyUser" method="post" class="form-horizontal">
+            <form action="resources/modifyResource" method="post" class="form-horizontal">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel2">修改用户</h4>
+                    <h4 class="modal-title" id="myModalLabel2">修改资源</h4>
                 </div>
                 <div class="modal-body">
 
@@ -273,60 +252,66 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">用户名</label>
+                        <label class="control-label col-md-2">常量</label>
                         <div class="col-md-10">
-                            <input type="text" id="username" class="form-control" name="username"/>
+                            <input type="text" id="constant" class="form-control" name="constant"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">密码</label>
+                        <label class="control-label col-md-2">链接地址</label>
                         <div class="col-md-10">
-                            <input type="password" id="password" class="form-control" name="password"/>
+                            <input type="text" id="href" class="form-control" name="href"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">备注</label>
+                        <label class="control-label col-md-2">资源名称</label>
                         <div class="col-md-10">
-                            <input type="text" id="description" class="form-control" name="description"/>
+                            <input type="text" id="name" class="form-control" name="name"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">邮箱</label>
+                        <label class="control-label col-md-2">父节点</label>
                         <div class="col-md-10">
-                            <input type="text" id="email" class="form-control" name="email"/>
+                            <input type="text" id="parent" class="form-control" name="parent.id"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">所属部门</label>
+                        <label class="control-label col-md-2">打开方式</label>
                         <div class="col-md-10">
-                            <input type="text" id="dept" class="form-control" name="dept.id"/>
+                            <input type="text" id="target" class="form-control" name="target"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">显示信息</label>
+                        <div class="col-md-10">
+                            <input type="text" id="title" class="form-control" name="title"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">性别</label>
+                        <label class="control-label col-md-2">类型</label>
                         <div class="col-md-10">
                             <label class="radio-inline">
-                                <input type="radio" name="sex" class="sex" value="1">男
+                                <input type="radio" name="type" class="type" value="2">资源
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="sex" class="sex" value="0">女
+                                <input type="radio" name="type" class="type" value="1">功能
                             </label>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">是否锁定</label>
+                        <label class="control-label col-md-2">是否显示</label>
                         <div class="col-md-10">
                             <label class="radio-inline">
-                                <input type="radio" name="locked" class="locked" value="1">是
+                                <input type="radio" name="shown" class="shown" value="1">是
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="locked" class="locked" value="0">否
+                                <input type="radio" name="shown" class="shown" value="0">否
                             </label>
                         </div>
                     </div>
@@ -355,41 +340,40 @@
 
 </body>
 </html>
-<script src="assets/js/util.js"></script>
+
 <script>
-    function modifyUser(userId) {
+    function modifyResource(resourceId) {
         // 先发出 ajax 请求, 返回原对象, 然后弹出模块框并设置初始值
         $.ajax({
-            url: "users/modifyUser/" + userId,
+            url: "resources/modifyResource/" + resourceId,
             method: "get",
             dateType: "json"
-        }).done(function (user) {
-            console.log(user);
-            $("#id").val(user.id);
-            $("#description").val(user.description);
-            $("#email").val(user.email);
-            $("#dept").val(user.dept.id);
-            $("#username").val(user.username);
-            $("#password").attr("value", user.password);
+        }).done(function (resource) {
+            $("#id").val(resource.id);
+            $("#constant").val(resource.constant);
+            $("#href").val(resource.href);
+            $("#name").val(resource.name);
+            $("#parent").val(resource.parent == null ? null : resource.parent.id);
+            $("#target").val(resource.target);
+            $("#title").val(resource.title);
 
             $(".enabled").each(function () {
-                if ($(this).prop("value") == user.enabled) {
+                if ($(this).prop("value") == resource.enabled) {
                     $(this).prop("checked", true);
                 }
             });
 
-            $(".locked").each(function () {
-                if ($(this).prop("value") == user.locked) {
+            $(".shown").each(function () {
+                if ($(this).prop("value") == resource.shown) {
                     $(this).prop("checked", true);
                 }
             });
 
-            $(".sex").each(function () {
-                if ($(this).prop("value") == user.sex) {
+            $(".type").each(function () {
+                if ($(this).prop("value") == resource.type) {
                     $(this).prop("checked", true);
                 }
             });
         });
     }
 </script>
-
