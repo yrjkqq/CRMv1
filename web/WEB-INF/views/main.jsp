@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <base href="<%=basePath%>">
-    <title>主页面</title>
+    <title>后台管理系统</title>
     <script src="assets/js/jquery-3.2.1.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <link rel="stylesheet" href="assets/css/bootstrap.css">

@@ -40,21 +40,23 @@ public class LoginFilter implements Filter {
 
             // 返回到页面通过过滤器时, 需要获取当前登陆对象
             User currentUser1 = (User) req.getSession().getAttribute("currentUser");
-            // 查询当前用户所有角色的所有权限
-            Set<Role> currentUserRoles = currentUser1.getRoles();
-            // 使菜单有顺序
-            Set<String> currentUserResources = new LinkedHashSet<>();
-            Set<Resource> cur = new HashSet<>();
-            for (Role role : currentUserRoles) {
-                for (Resource resource : role.getResources()) {
-                    currentUserResources.add(resource.getConstant());
-                    // 同时为菜单做准备工作, 获取所有资源对象, 并去重
-                    cur.add(resource);
+            if (Objects.nonNull(currentUser1)) {
+                // 查询当前用户所有角色的所有权限
+                Set<Role> currentUserRoles = currentUser1.getRoles();
+                // 使菜单有顺序
+                Set<String> currentUserResources = new LinkedHashSet<>();
+                Set<Resource> cur = new HashSet<>();
+                for (Role role : currentUserRoles) {
+                    for (Resource resource : role.getResources()) {
+                        currentUserResources.add(resource.getConstant());
+                        // 同时为菜单做准备工作, 获取所有资源对象, 并去重
+                        cur.add(resource);
+                    }
                 }
+                // 返回到页面上
+                req.getSession().setAttribute("currentUserResources", currentUserResources);
+                req.getSession().setAttribute("cur", cur);
             }
-            // 返回到页面上
-            req.getSession().setAttribute("currentUserResources", currentUserResources);
-            req.getSession().setAttribute("cur", cur);
         } else {
             resp.getWriter().write("<h3>未登录, 请<a href='/crm'>登陆</a>后使用本系统!</h3>");
         }

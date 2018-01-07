@@ -24,7 +24,6 @@ public class User {
     private Byte sex;
     private String username;
 
-    // @JsonIgnore
     // 保存角色集合: 维护主键
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -42,6 +41,16 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "deptno")
     private Dept dept;
+
+    // 客服人员: 一对多
+    @JsonIgnore
+    @OneToMany(mappedBy = "serviceMan")
+    private Set<Complaint> complaintsWithService;
+
+    // 售后人员: 一对多
+    @JsonIgnore
+    @OneToMany(mappedBy = "serviceAfterSales")
+    private Set<Complaint> complaintsWithAfterSales;
 
     @Override
     public boolean equals(Object o) {
@@ -158,5 +167,22 @@ public class User {
                 ", roles=" + roles +
                 ", dept=" + dept +
                 '}';
+    }
+
+
+    public Set<Complaint> getComplaintsWithService() {
+        return complaintsWithService;
+    }
+
+    public void setComplaintsWithService(Set<Complaint> complaintsWithService) {
+        this.complaintsWithService = complaintsWithService;
+    }
+
+    public Set<Complaint> getComplaintsWithAfterSales() {
+        return complaintsWithAfterSales;
+    }
+
+    public void setComplaintsWithAfterSales(Set<Complaint> complaintsWithAfterSales) {
+        this.complaintsWithAfterSales = complaintsWithAfterSales;
     }
 }
