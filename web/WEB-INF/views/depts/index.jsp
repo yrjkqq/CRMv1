@@ -50,10 +50,12 @@
                         <div class="row">
                             <div class="col-md-4">部门列表</div>
                             <div class="col-md-8">
-                                <a role="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
-                                   data-target="#myModalToAdd">
-                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;添加部门
-                                </a>
+                                <c:if test="${currentUserResources.contains('SYS_DEPT_SAVE')}">
+                                    <a role="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
+                                       data-target="#myModalToAdd">
+                                        <span class="glyphicon glyphicon-plus"></span>&nbsp;添加部门
+                                    </a>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -65,28 +67,40 @@
                             <th>部门名称</th>
                             <th>部门描述</th>
                             <th>所属公司</th>
-                            <th>操作</th>
+                            <c:if test="${currentUserResources.contains('SYS_DEPT_UPDATE') && currentUserResources.contains('SYS_DEPT_DELETE')}">
+                                <th>操作</th>
+                            </c:if>
                         </tr>
                         </thead>
                         <tbody>
                         <!-- 列表循环 -->
                         <c:forEach items="${depts}" var="dept">
+
                             <tr>
                                 <td>${dept.id}</td>
-                                <td>${dept.name}</td>
+                                <td><a href="users/index?deptId=${dept.id}">${dept.name}</a></td>
                                 <td>${dept.description}</td>
                                 <td>${dept.company}</td>
-                                <td>
-                                    <a role="button"
-                                       class="btn btn-warning btn-xs" data-toggle="modal"
-                                       data-target="#myModalToUpdate" onclick="modifyDept(${dept.id})">
-                                        <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
-                                    </a>
-                                    <a role="button" href="depts/deleteDept/${dept.id}" class="btn btn-danger btn-xs">
-                                        <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
-                                    </a>
-                                </td>
 
+                                <c:if test="${currentUserResources.contains('SYS_DEPT_UPDATE') && currentUserResources.contains('SYS_DEPT_DELETE')}">
+                                    <td>
+                                        <c:if test="${currentUserResources.contains('SYS_DEPT_UPDATE')}">
+                                            <a role="button"
+                                               class="btn btn-warning btn-xs" data-toggle="modal"
+                                               data-target="#myModalToUpdate" onclick="modifyDept(${dept.id})">
+                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${currentUserResources.contains('SYS_DEPT_DELETE')}">
+                                            <a role="button"
+                                               class="btn btn-warning btn-xs" data-toggle="modal"
+                                               data-target="#myModalToDelete"
+                                               onclick="confirmDelete(${dept.id}, '${dept.name}')">
+                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;删除
+                                            </a>
+                                        </c:if>
+                                    </td>
+                                </c:if>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -202,6 +216,37 @@
     </div>
 </div>
 
+<%--删除部门--%>
+<div class="modal fade" id="myModalToDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <form action="depts/deleteDept" method="get" class="form-horizontal">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel3">删除部门</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group text-center">
+                        <h3>确认删除<span id="deptName" style="color: red">&nbsp;</span>吗?</h3>
+                    </div>
+                    <input type="hidden" value="" id="deleteDeptId" name="deleteDeptId"/>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">确认</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
 <script>
@@ -216,6 +261,12 @@
             $("#description").val(dept.description);
             $("#name").val(dept.name);
         });
+    }
+
+    // 为删除操作模态框设置值
+    function confirmDelete(deptId, deptName) {
+        $("#deleteDeptId").val(deptId);
+        $("#deptName").html(deptName);
     }
 </script>
 

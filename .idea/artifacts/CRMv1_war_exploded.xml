@@ -24,6 +24,7 @@
           <element id="library" level="application" name="cglib" />
           <element id="library" level="application" name="validation" />
           <element id="library" level="application" name="mysql-connector" />
+          <element id="library" level="application" name="java-mail" />
         </element>
       </element>
     </root>

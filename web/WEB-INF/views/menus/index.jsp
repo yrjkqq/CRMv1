@@ -50,10 +50,12 @@
                         <div class="row">
                             <div class="col-md-4">菜单列表</div>
                             <div class="col-md-8">
-                                <a role="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
-                                   data-target="#myModalToAdd">
-                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;添加菜单
-                                </a>
+                                <c:if test="${currentUserResources.contains('SYS_RESOURCE_SAVE')}">
+                                    <a role="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
+                                       data-target="#myModalToAdd">
+                                        <span class="glyphicon glyphicon-plus"></span>&nbsp;添加菜单
+                                    </a>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -61,45 +63,55 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>常量</th>
-                            <th>是否可用</th>
-                            <th>链接地址</th>
-                            <th>主键</th>
+                            <th>编号</th>
                             <th>菜单名称</th>
+                            <th>常量</th>
+                            <th>链接地址</th>
                             <th>父节点</th>
-                            <th>是否显示</th>
                             <th>打开方式</th>
-                            <th>显示信息</th>
-                            <th>类型</th>
-                            <th>操作</th>
+                            <th>显示图标</th>
+                            <c:if test="${currentUserResources.contains('SYS_ROLE_ALLOC_RESOURCE')
+                            && currentUserResources.contains('SYS_RESOURCE_UPDATE')
+                            && currentUserResources.contains('SYS_RESOURCE_DELETE')}">
+                                <th>操作</th>
+                            </c:if>
                         </tr>
                         </thead>
 
                         <c:forEach items="${menuList}" var="menu">
                             <tr>
-                                <td>${menu.constant}</td>
-                                <td>${menu.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
-                                <td>${menu.href}</td>
                                 <td>${menu.id}</td>
                                 <td>${menu.name}</td>
+                                <td>${menu.constant}</td>
+                                <td>${menu.href}</td>
                                 <td>${menu.parent.id}</td>
-                                <td>${menu.shown == 1 ? '<span class="label label-primary">显示</span>' : '<span class="label label-danger">不显示</span>'}</td>
                                 <td>${menu.target}</td>
-                                <td>${menu.title}</td>
-                                <td>${menu.type == 2 ? '<span class="label label-primary">资源</span>' : '<span class="label label-danger">功能</span>'}</td>
-                                <td>
-                                    <a role="button" href="#" class="btn btn-warning btn-xs">
-                                        <span class="glyphicon glyphicon-edit"></span>&nbsp;权限匹配
-                                    </a>
-                                    <a role="button" href="#"
-                                       class="btn btn-warning btn-xs" data-toggle="modal"
-                                       data-target="#myModalToUpdate" onclick="modifyResource(${menu.id})">
-                                        <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
-                                    </a>
-                                    <a role="button" href="resources/deleteResource/${menu.id}" class="btn btn-danger btn-xs">
-                                        <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
-                                    </a>
-                                </td>
+                                <td><span class="${menu.title}"></span></td>
+
+                                <c:if test="${currentUserResources.contains('SYS_ROLE_ALLOC_RESOURCE')
+                            && currentUserResources.contains('SYS_RESOURCE_UPDATE')
+                            && currentUserResources.contains('SYS_RESOURCE_DELETE')}">
+                                    <td>
+                                        <c:if test="${currentUserResources.contains('SYS_ROLE_ALLOC_RESOURCE')}">
+                                            <a role="button" href="#" class="btn btn-warning btn-xs">
+                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;权限匹配
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${currentUserResources.contains('SYS_RESOURCE_UPDATE')}">
+                                            <a role="button" href="#"
+                                               class="btn btn-warning btn-xs" data-toggle="modal"
+                                               data-target="#myModalToUpdate" onclick="modifyResource(${menu.id})">
+                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${currentUserResources.contains('SYS_RESOURCE_DELETE')}">
+                                            <a role="button" href="resources/deleteResource/${menu.id}"
+                                               class="btn btn-danger btn-xs">
+                                                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                                            </a>
+                                        </c:if>
+                                    </td>
+                                </c:if>
 
                             </tr>
                         </c:forEach>
@@ -174,50 +186,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">显示信息</label>
+                        <label class="control-label col-md-2">显示图标</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="title"/>
                         </div>
                     </div>
 
                     <%--主键由数据库生成--%>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2">类型</label>
-                        <div class="col-md-10">
-                            <label class="radio-inline">
-                                <input type="radio" name="type" value="1">资源
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="type" value="0">功能
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2">是否可用</label>
-                        <div class="col-md-10">
-                            <label class="radio-inline">
-                                <input type="radio" name="enabled" value="1">是
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="enabled" value="0">否
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2">是否显示</label>
-                        <div class="col-md-10">
-                            <label class="radio-inline">
-                                <input type="radio" name="shown" value="1">是
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="shown" value="0">否
-                            </label>
-                        </div>
-                    </div>
-
+                    <input type="hidden" name="type" value="1">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -228,7 +204,7 @@
     </div>
 </div>
 
-<!--动态模态框, 修改资源-->
+<!--动态模态框, 修改菜单-->
 <!-- Modal -->
 <div class="modal fade" id="myModalToUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
     <div class="modal-dialog" role="document">
@@ -240,12 +216,12 @@
                     <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel2">修改资源</h4>
+                    <h4 class="modal-title" id="myModalLabel2">修改菜单</h4>
                 </div>
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label class="control-label col-md-2">主键</label>
+                        <label class="control-label col-md-2">编号</label>
                         <div class="col-md-10">
                             <input type="text" id="id" class="form-control" readonly name="id"/>
                         </div>
@@ -286,7 +262,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-2">显示信息</label>
+                        <label class="control-label col-md-2">显示图标</label>
                         <div class="col-md-10">
                             <input type="text" id="title" class="form-control" name="title"/>
                         </div>
@@ -299,35 +275,10 @@
                                 <input type="radio" name="type" class="type" value="2">资源
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="type" class="type" value="1">功能
+                                <input type="radio" name="type" class="type" value="1">菜单
                             </label>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2">是否显示</label>
-                        <div class="col-md-10">
-                            <label class="radio-inline">
-                                <input type="radio" name="shown" class="shown" value="1">是
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="shown" class="shown" value="0">否
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2">是否可用</label>
-                        <div class="col-md-10">
-                            <label class="radio-inline">
-                                <input type="radio" name="enabled" class="enabled" value="1">是
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="enabled" class="enabled" value="0">否
-                            </label>
-                        </div>
-                    </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -356,18 +307,6 @@
             $("#parent").val(resource.parent == null ? null : resource.parent.id);
             $("#target").val(resource.target);
             $("#title").val(resource.title);
-
-            $(".enabled").each(function () {
-                if ($(this).prop("value") == resource.enabled) {
-                    $(this).prop("checked", true);
-                }
-            });
-
-            $(".shown").each(function () {
-                if ($(this).prop("value") == resource.shown) {
-                    $(this).prop("checked", true);
-                }
-            });
 
             $(".type").each(function () {
                 if ($(this).prop("value") == resource.type) {

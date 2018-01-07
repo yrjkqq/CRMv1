@@ -80,11 +80,13 @@
                         <div class="row">
                             <div class="col-md-4">用户列表</div>
                             <div class="col-md-8">
-                                <%--todo 此处的按钮应该是动态获取到当前用户是否有 添加用户 资源, 有才能显示--%>
-                                <a role="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
-                                   data-target="#myModalToAdd">
-                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户
-                                </a>
+                                <%-- 此处的按钮应该是动态获取到当前用户是否有 添加用户 资源, 有才能显示--%>
+                                <c:if test="${currentUserResources.contains('SYS_USER_SAVE')}">
+                                    <a role="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
+                                       data-target="#myModalToAdd">
+                                        <span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户
+                                    </a>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -98,15 +100,18 @@
                             <th>性别</th>
                             <th>邮箱</th>
                             <th>备注</th>
-                            <th>是否可用</th>
-                            <th>是否锁定</th>
                             <th>所属部门</th>
-                            <th>操作</th>
+                            <c:if test="${currentUserResources.contains('SYS_USER_ALLOC_ROLE')
+                            && currentUserResources.contains('SYS_USER_UPDATE')
+                            && currentUserResources.contains('SYS_USER_DELETE')}">
+                                <th>操作</th>
+                            </c:if>
                         </tr>
                         </thead>
                         <tbody>
                         <!-- 列表循环 -->
                         <c:forEach items="${userList}" var="user">
+                            <%--当前用户所在部门才会被显示出来--%>
                             <tr>
                                 <td>${user.id}</td>
                                 <td>${user.username}</td>
@@ -114,25 +119,40 @@
                                 <td>${user.sex == 1 ? '男' : '女'}</td>
                                 <td>${user.email}</td>
                                 <td>${user.description}</td>
-                                <td>${user.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
-                                <td>${user.locked == 1 ? '<span class="label label-primary">锁定</span>' : '<span class="label label-danger">未锁定</span>'}</td>
                                 <td>${user.dept.name}</td>
-                                <td>
-                                        <%--增加分配角色按钮--%>
-                                    <a role="button" href="users/allocateRole/${user.id}" class="btn btn-danger btn-xs">
-                                        <span class="glyphicon glyphicon-trash"></span>&nbsp;分配角色
-                                    </a>
-                                    <a role="button"
-                                       class="btn btn-warning btn-xs" data-toggle="modal"
-                                       data-target="#myModalToUpdate" onclick="modifyUser(${user.id})">
-                                        <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
-                                    </a>
-                                    <a role="button" href="users/deleteUser/${user.id}" class="btn btn-danger btn-xs">
-                                        <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
-                                    </a>
-                                </td>
 
+                                <c:if test="${currentUserResources.contains('SYS_USER_ALLOC_ROLE')
+                            && currentUserResources.contains('SYS_USER_UPDATE')
+                            && currentUserResources.contains('SYS_USER_DELETE')}">
+                                    <td>
+                                            <%--增加分配角色按钮--%>
+                                            <%--当前角色有对应的权限才能显示对应的按钮--%>
+                                        <c:if test="${currentUserResources.contains('SYS_USER_ALLOC_ROLE')}">
+                                            <a role="button" href="users/allocateRole/${user.id}"
+                                               class="btn btn-danger btn-xs">
+                                                <span class="glyphicon glyphicon-trash"></span>&nbsp;分配角色
+                                            </a>
+                                        </c:if>
+
+                                        <c:if test="${currentUserResources.contains('SYS_USER_UPDATE')}">
+                                            <a role="button"
+                                               class="btn btn-warning btn-xs" data-toggle="modal"
+                                               data-target="#myModalToUpdate" onclick="modifyUser(${user.id})">
+                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
+                                            </a>
+                                        </c:if>
+
+                                        <c:if test="${currentUserResources.contains('SYS_USER_DELETE')}">
+                                            <a role="button" href="users/deleteUser/${user.id}"
+                                               class="btn btn-danger btn-xs">
+                                                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                                            </a>
+                                        </c:if>
+                                    </td>
+                                </c:if>
                             </tr>
+
+
                         </c:forEach>
                         </tbody>
                     </table>

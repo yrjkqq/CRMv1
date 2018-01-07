@@ -31,6 +31,11 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
+    public List<Resource> queryAllResourceWithoutMenu() {
+        return resourceDao.queryAllResourceWithoutMenu();
+    }
+
+    @Override
     public Resource queryResourceById(int id) {
         return resourceDao.queryResourceById(id);
     }
@@ -43,6 +48,11 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<Resource> queryResourceOnePageWithMenu(int startRow, int pageRow) {
         return resourceDao.queryResourceOnePageWithMenu(startRow, pageRow);
+    }
+
+    @Override
+    public List<Resource> queryResourceOnePageWithoutMenu(int startRow, int pageRow) {
+        return resourceDao.queryResourceOnePageWithoutMenu(startRow, pageRow);
     }
 
     @Override

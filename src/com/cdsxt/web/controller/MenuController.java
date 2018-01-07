@@ -1,5 +1,6 @@
 package com.cdsxt.web.controller;
 
+import com.cdsxt.interceptor.annotation.Authorize;
 import com.cdsxt.po.Resource;
 import com.cdsxt.service.ResourceService;
 import com.cdsxt.util.PageUtil;
@@ -23,6 +24,7 @@ public class MenuController {
     @Autowired
     private ResourceService resourceService;
 
+    @Authorize(value = "MENU_MANAGE")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String index(ModelMap model, @RequestParam(value = "curPage", defaultValue = "1") Integer curPage) {
 

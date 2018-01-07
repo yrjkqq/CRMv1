@@ -11,7 +11,6 @@ import java.util.Set;
 @Table(name = "crm_role")
 public class Role {
 
-
     private String constant;
     private String description;
     private Byte enabled;

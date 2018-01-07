@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -31,14 +32,26 @@ public class UserController {
     // 查询用户表, 全部查询
     @Authorize(value = "SYS_USER_VIEW")
     @RequestMapping(value = {"", "index"}, method = RequestMethod.GET)
-    public String index(ModelMap modelMap, @RequestParam(value = "curPage", defaultValue = "1") Integer curPage) {
+    public String index(ModelMap modelMap, @RequestParam(value = "curPage", defaultValue = "1") Integer curPage, Integer deptId) {
         List<User> userList = userService.queryAll();
-
         PageUtil page = new PageUtil(userList.size(), curPage);
+        modelMap.addAttribute("page", page);
+
         int startRow = page.getStartRow();
         int pageCount = page.getPageRow();
         List<User> userListOnePage = userService.queryOnePage(startRow, pageCount);
-        modelMap.addAttribute("page", page);
+        // 如果 deptId 为 null, 则返回所有员工; 否则只返回该部门的员工
+        if (Objects.nonNull(deptId)) {
+            List<User> userWithDept = new ArrayList<>();
+            for (User user : userListOnePage) {
+                if (user.getDept().getId().equals(deptId)) {
+                    userWithDept.add(user);
+                }
+            }
+            modelMap.addAttribute("userList", userWithDept);
+            return "users/index";
+        }
+
         modelMap.addAttribute("userList", userListOnePage);
         return "users/index";
     }
@@ -91,7 +104,7 @@ public class UserController {
     @Authorize(value = "SYS_USER_ALLOC_ROLE")
     @RequestMapping(value = "allocateRole/{id}", method = RequestMethod.GET)
     public String allocateRole(@PathVariable("id") Integer id, Model model) {
-        // 先查询出原有的课程, 并返回到页面上
+        // 先查询出原有的角色信息, 并返回到页面上
         User user = this.userService.queryUserById(id);
         if (Objects.nonNull(user)) {
             // 用户存在

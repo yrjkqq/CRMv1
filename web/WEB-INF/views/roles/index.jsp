@@ -79,9 +79,11 @@
                         <div class="row">
                             <div class="col-md-4">角色列表</div>
                             <div class="col-md-8 text-right">
-                                <a role="button" href="roles/addRole" class="btn btn-primary btn-sm">
-                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;添加角色
-                                </a>
+                                <c:if test="${currentUserResources.contains('SYS_ROLE_SAVE')}">
+                                    <a role="button" href="roles/addRole" class="btn btn-primary btn-sm">
+                                        <span class="glyphicon glyphicon-plus"></span>&nbsp;添加角色
+                                    </a>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -89,38 +91,51 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
+                            <th>编号</th>
+                            <th>角色名</th>
                             <th>常量</th>
                             <th>备注</th>
-                            <th>是否可用</th>
-                            <th>主键</th>
-                            <th>角色名</th>
-                            <th>操作</th>
+                            <c:if test="${currentUserResources.contains('SYS_ROLE_ALLOC_RESOURCE')
+                            && currentUserResources.contains('SYS_ROLE_UPDATE')
+                            && currentUserResources.contains('SYS_ROLE_DELETE')}">
+                                <th>操作</th>
+                            </c:if>
                         </tr>
                         </thead>
                         <tbody>
                         <!-- 列表循环 -->
                         <c:forEach items="${roleList}" var="role">
                             <tr>
-                                <td>${role.constant}</td>
-                                <td>${role.description}</td>
-                                <td>${role.enabled == 1 ? '<span class="label label-primary">可用</span>' : '<span class="label label-danger">禁用</span>'}</td>
                                 <td>${role.id}</td>
                                 <td>${role.name}</td>
+                                <td>${role.constant}</td>
+                                <td>${role.description}</td>
 
-                                <td>
-                                    <a role="button"
-                                       class="btn btn-warning btn-xs" data-toggle="modal"
-                                       data-target="#myModalToUpdate" onclick="allocateResource(${role.id})">
-                                        <span class="glyphicon glyphicon-edit"></span>&nbsp;分配资源
-                                    </a>
-                                    <a role="button" href="roles/modifyRole/${role.id}"
-                                       class="btn btn-warning btn-xs">
-                                        <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
-                                    </a>
-                                    <a role="button" href="roles/deleteRole/${role.id}" class="btn btn-danger btn-xs">
-                                        <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
-                                    </a>
-                                </td>
+                                <c:if test="${currentUserResources.contains('SYS_ROLE_ALLOC_RESOURCE')
+                            && currentUserResources.contains('SYS_ROLE_UPDATE')
+                            && currentUserResources.contains('SYS_ROLE_DELETE')}">
+                                    <td>
+                                        <c:if test="${currentUserResources.contains('SYS_ROLE_ALLOC_RESOURCE')}">
+                                            <a role="button"
+                                               class="btn btn-warning btn-xs" data-toggle="modal"
+                                               data-target="#myModalToUpdate" onclick="allocateResource(${role.id})">
+                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;分配资源
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${currentUserResources.contains('SYS_ROLE_UPDATE')}">
+                                            <a role="button" href="roles/modifyRole/${role.id}"
+                                               class="btn btn-warning btn-xs">
+                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${currentUserResources.contains('SYS_ROLE_DELETE')}">
+                                            <a role="button" href="roles/deleteRole/${role.id}"
+                                               class="btn btn-danger btn-xs">
+                                                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                                            </a>
+                                        </c:if>
+                                    </td>
+                                </c:if>
                             </tr>
                         </c:forEach>
 

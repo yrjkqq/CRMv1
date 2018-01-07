@@ -23,7 +23,6 @@
         <jsp:include page="commons/header.jsp"/>
     </div>
 
-    <%--todo 在主页上分配菜单和其对应的地址--%>
     <div class="row">
         <!--菜单-->
         <div class="col-md-2">

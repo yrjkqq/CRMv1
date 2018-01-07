@@ -8,7 +8,7 @@
 <html>
 <head>
     <base href="<%=basePath%>">
-    <title>CRM 权限模型</title>
+    <title>找回密码</title>
     <script src="assets/js/jquery-3.2.1.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -19,28 +19,29 @@
 
     <div class="row" style="margin-top:100px; margin-bottom:auto">
         <div class="col-md-4 col-md-offset-4">
-            <form class="form" action="crm/testify" method="post">
+            <form class="form" action="crm/forgotPassword" method="post">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <strong>用户登陆</strong>
+                        <strong>找回密码</strong>
                     </div>
                     <div class="panel-body">
+                        <div class="alert alert-success" role="alert">
+                            <strong>Well done!</strong> 将发送一封邮件到你的注册邮箱, 将查收!
+                        </div>
                         <div class="form-group">
                             <label class="control-label">用户名</label>
-                            <input class="form-control" type="text" name="username" value="${username}"/>
-                            <span style="color:red; font-size: small">${usernameTip}</span>
+                            <input class="form-control" type="text" name="username"/>
                         </div>
                         <div class="form-group">
-                            <label class="control-label">密码</label>
-                            <input class="form-control" type="password" name="password"/>
-                            <span style="color:red; font-size: small">${passwordTip}</span>
+                            <label class="control-label">注册邮箱</label>
+                            <input class="form-control" type="text" name="email"/>
+
                         </div>
                         <div class="form-group">
-                            <input type="submit" class="btn btn-primary btn-sm btn-block" value="登陆"/>
+                            <input type="submit" class="btn btn-primary btn-sm btn-block" value="提交"/>
                         </div>
                         <div class="text-right">
-                            <%--todo 添加密码找回功能--%>
-                            <a href="crm/forgotPassword">忘记密码?</a>
+                            <a href="crm/login">去登陆</a>
                         </div>
                     </div>
                 </div>

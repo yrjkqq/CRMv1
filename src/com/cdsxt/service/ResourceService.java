@@ -9,10 +9,12 @@ public interface ResourceService {
     List<Resource> queryAllResource();
 
     List<Resource> queryAllResourceWithMenu();
+    List<Resource> queryAllResourceWithoutMenu();
 
     List<Resource> queryResourceOnePage(int startRow, int pageRow);
 
     List<Resource> queryResourceOnePageWithMenu(int startRow, int pageRow);
+    List<Resource> queryResourceOnePageWithoutMenu(int startRow, int pageRow);
 
     Resource queryResourceById(int id);
 

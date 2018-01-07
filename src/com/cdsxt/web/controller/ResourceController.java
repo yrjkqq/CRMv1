@@ -24,11 +24,11 @@ public class ResourceController {
     @Authorize(value = "SYS_RESOURCE_VIEW")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String index(ModelMap model, @RequestParam(value = "curPage", defaultValue = "1") Integer curPage) {
-        List<Resource> resourceList = resourceService.queryAllResource();
+        List<Resource> resourceList = resourceService.queryAllResourceWithoutMenu();
         PageUtil page = new PageUtil(resourceList.size(), curPage);
         int startRow = page.getStartRow();
         int pageCount = page.getPageRow();
-        List<Resource> resourceListOnePage = resourceService.queryResourceOnePage(startRow, pageCount);
+        List<Resource> resourceListOnePage = resourceService.queryResourceOnePageWithoutMenu(startRow, pageCount);
 
         model.addAttribute("page", page);
         model.addAttribute("resourceList", resourceListOnePage);

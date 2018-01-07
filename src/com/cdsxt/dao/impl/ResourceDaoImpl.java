@@ -37,6 +37,13 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @SuppressWarnings("unchecked")
     @Override
+    public List<Resource> queryAllResourceWithoutMenu() {
+        // 菜单的 type 为 1; 功能为 2
+        return this.getSession().createQuery("from Resource cr where cr.type = 2").list();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
     public List<Resource> queryResourceOnePage(int startRow, int pageRow) {
         Query query = this.getSession().createQuery("select cr from Resource cr");
         query.setFirstResult(startRow);
@@ -48,6 +55,15 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public List<Resource> queryResourceOnePageWithMenu(int startRow, int pageRow) {
         Query query = this.getSession().createQuery("select cr from Resource cr where cr.type = 1");
+        query.setFirstResult(startRow);
+        query.setMaxResults(pageRow);
+        return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Resource> queryResourceOnePageWithoutMenu(int startRow, int pageRow) {
+        Query query = this.getSession().createQuery("select cr from Resource cr where cr.type = 2");
         query.setFirstResult(startRow);
         query.setMaxResults(pageRow);
         return query.list();

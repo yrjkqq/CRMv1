@@ -38,6 +38,8 @@
             <mvc:exclude-mapping path="/crm"/>
             <mvc:exclude-mapping path="/**/testify"/>
             <mvc:exclude-mapping path="/**/quit"/>
+            <mvc:exclude-mapping path="/**/forgotPassword"/>
+            <mvc:exclude-mapping path="/**/resetPassword"/>
             <bean class="com.cdsxt.interceptor.AuthorizeInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
