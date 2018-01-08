@@ -26,6 +26,9 @@ public class HandleMethod {
     private Date callbackDate;
     private Boolean isDone;
 
+    @Column(name = "handle_method")
+    private String handleMethod;
+
     public Integer getId() {
         return id;
     }
@@ -72,5 +75,13 @@ public class HandleMethod {
 
     public void setDone(Boolean done) {
         isDone = done;
+    }
+
+    public String getHandleMethod() {
+        return handleMethod;
+    }
+
+    public void setHandleMethod(String handleMethod) {
+        this.handleMethod = handleMethod;
     }
 }

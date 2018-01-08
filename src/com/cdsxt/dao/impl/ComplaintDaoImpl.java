@@ -2,6 +2,7 @@ package com.cdsxt.dao.impl;
 
 import com.cdsxt.dao.ComplaintDao;
 import com.cdsxt.po.Complaint;
+import com.cdsxt.po.HandleMethod;
 import com.cdsxt.po.User;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -53,4 +54,16 @@ public class ComplaintDaoImpl implements ComplaintDao {
         query.setInteger("id", complaintId);
         return (Complaint) query.uniqueResult();
     }
+
+    @Override
+    public void addHandleMethod(HandleMethod handleMethod) {
+        this.getSession().save(handleMethod);
+    }
+
+    @Override
+    public void update(Complaint complaint) {
+        this.getSession().update(complaint);
+    }
+
+
 }

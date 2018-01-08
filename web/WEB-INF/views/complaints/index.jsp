@@ -52,7 +52,9 @@
                         <%--客服经理--%>
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary" onclick="queryAll('未指派')">未指派投诉</button>
+                                <button type="button" class="btn btn-primary" onclick="queryAllUnassigned('未指派')">
+                                    未指派投诉
+                                </button>
                             </div>
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-info">处理中投诉</button>
@@ -65,12 +67,12 @@
                             </div>
                         </div>
                         <br>
-                        <%--未处理投诉面板--%>
-                        <div class="panel panel-default" id="unhandledPanel" style="display:none">
+                        <%--未指派投诉面板--%>
+                        <div class="panel panel-default" id="unassignedPanel" style="display:none">
                             <div class="panel-heading">
-                                <h3 class="panel-title">未处理投诉</h3>
+                                <h3 class="panel-title">未指派投诉</h3>
                             </div>
-                            <table class="table table-hover" id="unhandledTab">
+                            <table class="table table-hover" id="unassignedTab">
                                 <tr>
                                     <th>投诉编号</th>
                                     <th>投诉客户</th>
@@ -81,7 +83,7 @@
                                 </tr>
                             </table>
                             <div class="panel-footer">
-                                <button class="btn btn-warning btn-sm" onclick="closeUnhandledPanel()">关闭</button>
+                                <button class="btn btn-warning btn-sm" onclick="closeUnassignedPanel()">关闭</button>
                             </div>
                         </div>
                         <%--指派售后面板--%>
@@ -119,7 +121,6 @@
                             </div>
                         </div>
                     </c:when>
-
 
                     <c:when test="${userRole.constant == 'SERVICE_MAN'}">
                         <%--客服人员--%>
@@ -205,7 +206,7 @@
                             </div>
                         </form>
 
-                        <%--修改投诉: 1. 显示出当前客服所提交的所有投诉; 2. 添加操作后即可修改投诉; 3. 投诉状态不能修改--%>
+                        <%--todo 修改投诉: 1. 显示出当前客服所提交的所有投诉; 2. 添加操作后即可修改投诉; 3. 投诉状态不能修改--%>
 
 
                     </c:when>
@@ -213,12 +214,69 @@
                         <%--售后人员--%>
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-warning">待售后处理</button>
+                                <button type="button" class="btn btn-warning"
+                                        onclick="queryAllUnhandled('未处理', ${currentUser.id})">待售后处理
+                                </button>
                             </div>
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-success">已处理投诉</button>
                             </div>
                         </div>
+                        <br>
+                        <%--未处理投诉面板--%>
+                        <div class="panel panel-default" id="unhandledPanel" style="display:none">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">未处理投诉</h3>
+                            </div>
+                            <table class="table table-hover" id="unhandledTab">
+                                <tr>
+                                    <th>投诉编号</th>
+                                    <th>投诉客户</th>
+                                    <th>联系人</th>
+                                    <th>联系电话</th>
+                                    <th>投诉问题</th>
+                                    <th>客服人员</th>
+                                    <th>操作</th>
+                                </tr>
+                            </table>
+                            <div class="panel-footer">
+                                <button class="btn btn-warning btn-sm" onclick="closeUnhandledPanel()">关闭</button>
+                            </div>
+                        </div>
+                        <%--处理投诉面板--%>
+                        <div class="panel panel-default" id="handleComplaintPanel" style="display:none">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">处理投诉</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="input-group">
+                                    <span class="input-group-addon">投诉编号</span>
+                                    <input type="text" class="form-control" readonly id="complaintId1">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">售后编号</span>
+                                    <input type="text" class="form-control" readonly
+                                           value="${currentUser.id}">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">售后姓名</span>
+                                    <input type="text" class="form-control" readonly
+                                           value="${currentUser.username}">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">解决办法</span>
+                                    <input type="text" class="form-control" id="handleMethod">
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <button class="btn btn-warning btn-sm" onclick="cancelHandle()">取消</button>
+                                <button class="btn btn-warning btn-sm" onclick="handleComplaint()">处理</button>
+                            </div>
+                        </div>
+
                     </c:when>
                     <c:when test="${userRole.constant == 'SERVICE_HANDLE_MAN'}">
                         <%--处理人员--%>
@@ -234,7 +292,7 @@
 </body>
 </html>
 <script>
-    <%--客服人员--%>
+    // 客服人员
     // 添加投诉
     function showAddComplaint() {
         $("#addComplaint").toggleClass("hide");
@@ -246,17 +304,17 @@
     });
 
     // 主管
-    // 未处理投诉面板: 显示面板
-    var $unhandledPanel = $("#unhandledPanel");
+    // 未指派投诉面板: 显示面板
+    var $unassignedPanel = $("#unassignedPanel");
 
-    // 查看未处理投诉
-    function queryAll(status) {
+    // 查看未指派投诉
+    function queryAllUnassigned(status) {
         // 显示面板
-        $unhandledPanel.css("display", "block");
+        $unassignedPanel.css("display", "block");
 
         // 先清空原先数据
-        var $unhandledTab = $("#unhandledTab");
-        $unhandledTab.find("tr:gt(0)").each(function () {
+        var $unassignedTab = $("#unassignedTab");
+        $unassignedTab.find("tr:gt(0)").each(function () {
             $(this).remove();
         });
 
@@ -270,7 +328,7 @@
         }).done(function (result) {
 
             for (var i in result) {
-                var $tr = $("<tr>").appendTo($unhandledTab);
+                var $tr = $("<tr>").appendTo($unassignedTab);
                 $("<td>" + result[i].id + "</td>" +
                     "<td>" + result[i].client + "</td>" +
                     "<td>" + result[i].contact + "</td>" +
@@ -282,9 +340,9 @@
         });
     }
 
-    // 关闭未处理投诉面板
-    function closeUnhandledPanel() {
-        $unhandledPanel.css("display", "none");
+    // 关闭未指派投诉面板
+    function closeUnassignedPanel() {
+        $unassignedPanel.css("display", "none");
     }
 
     // 指派售后面板
@@ -292,7 +350,7 @@
 
     // 显示并初始化售后处理面板
     function showAppointPanel(complaintId) {
-        $unhandledPanel.css("display", "none");
+        $unassignedPanel.css("display", "none");
         // 显示售后面板
         $appointAfterSalesPanel.css("display", "block");
         // 投诉编号
@@ -342,6 +400,83 @@
     function cancelAppoint() {
         $appointAfterSalesPanel.css("display", "none");
     }
+
+    // 售后人员
+    // 未处理投诉面板
+    var $unhandledPanel = $("#unhandledPanel");
+    // 未处理投诉表格
+    var $unhandledTab = $("#unhandledTab");
+
+    // 查看未处理投诉
+    function queryAllUnhandled(status, currentUserId) {
+        $unhandledPanel.css("display", "block");
+        $unhandledTab.find("tr:gt(0)").each(function () {
+            $(this).remove();
+        });
+        $.ajax({
+            url: "complaints/queryAll",
+            data: {
+                "status": status
+            },
+            type: "GET",
+            dataType: "json"
+        }).done(function (result) {
+            for (var i in result) {
+                // 只显示分配给当前售后的投诉
+                if (result[i].serviceAfterSales.id === currentUserId) {
+                    var $tr = $("<tr>").appendTo($unhandledTab);
+                    $("<td>" + result[i].id + "</td>" +
+                        "<td>" + result[i].client + "</td>" +
+                        "<td>" + result[i].contact + "</td>" +
+                        "<td>" + result[i].contactPhone + "</td>" +
+                        "<td>" + result[i].problem + "</td>" +
+                        "<td>" + result[i].serviceMan.username + "</td>" +
+                        "<td><button onclick='showHandleComplaint(" + result[i].id + ")' class='btn btn-primary btn-xs'>待处理</button></td>")
+                        .appendTo($tr);
+                }
+            }
+        });
+    }
+
+    // 关闭未处理投诉面板
+    function closeUnhandledPanel() {
+        $unhandledPanel.css("display", "none");
+    }
+
+    // 处理投诉面板
+    var $handleComplaintPanel = $("#handleComplaintPanel");
+
+    // 显示售后处理投诉面板并初始化
+    function showHandleComplaint(complaintId) {
+        closeUnhandledPanel();
+        // 显示售后处理投诉面板
+        $handleComplaintPanel.css("display", "block");
+        $("#complaintId1").val(complaintId);
+    }
+
+    // 取消售后处理
+    function cancelHandle() {
+        // 隐藏处理面板
+        $handleComplaintPanel.css("display", "none");
+    }
+
+    // 售后进行处理
+    function handleComplaint() {
+        // 发出处理售后请求
+        $.ajax({
+            url: "complaints/handleComplaint",
+            data: {
+                "complaintId": $("#complaintId1").val(), // 投诉编号
+                "handleMethod": $("#handleMethod").val() // 处理方式
+            },
+            type: "GET"
+        }).done(function (result) {
+            console.log(result);
+            // 关闭售后处理面板
+            cancelHandle();
+        });
+    }
+
 </script>
 
 

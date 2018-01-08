@@ -59,4 +59,13 @@ public class ComplaintController {
         this.complaintService.appointAfterSales(complaint, afterSalesId);
         return "done";
     }
+
+    // 售后处理
+    @RequestMapping(value = "handleComplaint", method = RequestMethod.GET)
+    @ResponseBody
+    public String handleComplaint(Integer complaintId, String handleMethod) {
+        Complaint complaint = this.complaintService.queryComplaintById(complaintId);
+        this.complaintService.handleComplaint(complaint, handleMethod);
+        return "done";
+    }
 }

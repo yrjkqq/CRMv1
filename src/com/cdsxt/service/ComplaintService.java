@@ -15,4 +15,6 @@ public interface ComplaintService {
     Complaint queryComplaintById(Integer complaintId);
 
     void appointAfterSales(Complaint complaint, Integer afterSalesId);
+
+    void handleComplaint(Complaint complaint, String handleMethod);
 }
