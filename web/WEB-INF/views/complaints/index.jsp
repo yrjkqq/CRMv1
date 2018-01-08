@@ -52,7 +52,7 @@
                         <%--客服经理--%>
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary">未处理投诉</button>
+                                <button type="button" class="btn btn-primary" onclick="queryAll('未指派')">未指派投诉</button>
                             </div>
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-info">处理中投诉</button>
@@ -64,7 +64,63 @@
                                 <button type="button" class="btn btn-success">已完成投诉</button>
                             </div>
                         </div>
+                        <br>
+                        <%--未处理投诉面板--%>
+                        <div class="panel panel-default" id="unhandledPanel" style="display:none">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">未处理投诉</h3>
+                            </div>
+                            <table class="table table-hover" id="unhandledTab">
+                                <tr>
+                                    <th>投诉编号</th>
+                                    <th>投诉客户</th>
+                                    <th>联系人</th>
+                                    <th>投诉问题</th>
+                                    <th>客服人员</th>
+                                    <th>操作</th>
+                                </tr>
+                            </table>
+                            <div class="panel-footer">
+                                <button class="btn btn-warning btn-sm" onclick="closeUnhandledPanel()">关闭</button>
+                            </div>
+                        </div>
+                        <%--指派售后面板--%>
+                        <div class="panel panel-default" id="appointAfterSalesPanel" style="display:none">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">指派售后处理</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="input-group">
+                                    <span class="input-group-addon">投诉编号</span>
+                                    <input type="text" class="form-control" readonly id="complaintId">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">经理编号</span>
+                                    <input type="text" class="form-control" readonly
+                                           value="${currentUser.id}" id="managerId">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">经理姓名</span>
+                                    <input type="text" name="client" class="form-control" readonly
+                                           value="${currentUser.username}">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">指派售后</span>
+                                    <select class="form-control" id="allAfterSalesId">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <button class="btn btn-warning btn-sm" onclick="cancelAppoint()">取消</button>
+                                <button class="btn btn-warning btn-sm" onclick="appointAfterSales()">指派</button>
+                            </div>
+                        </div>
                     </c:when>
+
+
                     <c:when test="${userRole.constant == 'SERVICE_MAN'}">
                         <%--客服人员--%>
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -111,7 +167,7 @@
                                     <br>
                                     <div class="input-group">
                                         <span class="input-group-addon">联系人</span>
-                                        <input type="text" name="contact" class="form-control" ">
+                                        <input type="text" name="contact" class="form-control">
                                     </div>
                                     <br>
                                     <div class="input-group">
@@ -128,7 +184,7 @@
                                         <span class="input-group-addon">投诉日期</span>
                                         <input type="text" name="complaintDate" class="form-control">
                                     </div>
-                                    <%--隐藏域提交投诉状态为: 未指派--%>
+                                        <%--隐藏域提交投诉状态为: 未处理--%>
                                     <input type="hidden" name="status" value="未指派"/>
 
                                 </div>
@@ -170,77 +226,7 @@
                     </c:when>
                 </c:choose>
             </c:forEach>
-            <%--<div class="row">
-                <div class="panel panel-default">
-                    <!-- Default panel contents -->
-                    <div class="panel-heading" style="padding-bottom: 5px; padding-top: 5px">
-                        <div class="row">
-                            <div class="col-md-4">部门列表</div>
-                            <div class="col-md-8">
-                                <c:if test="${currentUserResources.contains('SYS_COMPLAINT_SAVE')}">
-                                    <a role="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal"
-                                       data-target="#myModalToAdd">
-                                        <span class="glyphicon glyphicon-plus"></span>&nbsp;添加投诉
-                                    </a>
-                                </c:if>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Table -->
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>部门编号</th>
-                            <th>部门名称</th>
-                            <th>部门描述</th>
-                            <th>所属公司</th>
-                            <c:if test="${currentUserResources.contains('SYS_COMPLAINT_UPDATE') && currentUserResources.contains('SYS_COMPLAINT_DELETE')}">
-                                <th>操作</th>
-                            </c:if>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <!-- 列表循环 -->
-                        &lt;%&ndash;<c:forEach items="${depts}" var="dept">
-                            <tr>
-                                <td>${dept.id}</td>
-                                <td><a href="users/index?deptId=${dept.id}">${dept.name}</a></td>
-                                <td>${dept.description}</td>
-                                <td>${dept.company}</td>
 
-                                <c:if test="${currentUserResources.contains('SYS_COMPLAINT_UPDATE') && currentUserResources.contains('SYS_COMPLAINT_DELETE')}">
-                                    <td>
-                                        <c:if test="${currentUserResources.contains('SYS_COMPLAINT_UPDATE')}">
-                                            <a role="button"
-                                               class="btn btn-warning btn-xs" data-toggle="modal"
-                                               data-target="#myModalToUpdate" onclick="modifyDept(${dept.id})">
-                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;修改
-                                            </a>
-                                        </c:if>
-                                        <c:if test="${currentUserResources.contains('SYS_COMPLAINT_DELETE')}">
-                                            <a role="button"
-                                               class="btn btn-warning btn-xs" data-toggle="modal"
-                                               data-target="#myModalToDelete"
-                                               onclick="confirmDelete(${dept.id}, '${dept.name}')">
-                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;删除
-                                            </a>
-                                        </c:if>
-                                    </td>
-                                </c:if>
-                            </tr>
-                        </c:forEach>&ndash;%&gt;
-                        </tbody>
-                    </table>
-                    &lt;%&ndash;分页&ndash;%&gt;
-                    <div class="panel-footer">
-                        <td colspan="9">
-                            <jsp:include page="../commons/page.jsp">
-                                <jsp:param name="url" value="complaints/index"/>
-                            </jsp:include>
-                        </td>
-                    </div>
-                </div>
-            </div>--%>
         </div>
     </div>
 </div>
@@ -258,6 +244,104 @@
         format: 'yyyy/mm/dd',
         endDate: '0d'
     });
+
+    // 主管
+    // 未处理投诉面板: 显示面板
+    var $unhandledPanel = $("#unhandledPanel");
+
+    // 查看未处理投诉
+    function queryAll(status) {
+        // 显示面板
+        $unhandledPanel.css("display", "block");
+
+        // 先清空原先数据
+        var $unhandledTab = $("#unhandledTab");
+        $unhandledTab.find("tr:gt(0)").each(function () {
+            $(this).remove();
+        });
+
+        $.ajax({
+            url: "complaints/queryAll",
+            data: {
+                "status": status
+            },
+            type: "GET",
+            dataType: "json"
+        }).done(function (result) {
+
+            for (var i in result) {
+                var $tr = $("<tr>").appendTo($unhandledTab);
+                $("<td>" + result[i].id + "</td>" +
+                    "<td>" + result[i].client + "</td>" +
+                    "<td>" + result[i].contact + "</td>" +
+                    "<td>" + result[i].problem + "</td>" +
+                    "<td>" + result[i].serviceMan.username + "</td>" +
+                    "<td><button onclick='showAppointPanel(" + result[i].id + ")' class='btn btn-primary btn-xs'>指派售后</button></td>")
+                    .appendTo($tr);
+            }
+        });
+    }
+
+    // 关闭未处理投诉面板
+    function closeUnhandledPanel() {
+        $unhandledPanel.css("display", "none");
+    }
+
+    // 指派售后面板
+    var $appointAfterSalesPanel = $("#appointAfterSalesPanel");
+
+    // 显示并初始化售后处理面板
+    function showAppointPanel(complaintId) {
+        $unhandledPanel.css("display", "none");
+        // 显示售后面板
+        $appointAfterSalesPanel.css("display", "block");
+        // 投诉编号
+        $("#complaintId").val(complaintId);
+
+        // 查询所有售后人员; 返回 json
+        $.ajax({
+            url: "complaints/queryAfterSales",
+            data: {
+                "managerId": $("#managerId").val()
+            },
+            type: "GET",
+            dataType: "json"
+        }).done(function (result) {
+            var $allAfterSales = $("#allAfterSalesId");
+            // 先清空原数据
+            $allAfterSales.find("option").each(function () {
+                $(this).remove();
+            });
+            for (var i in result) {
+                // 所有售后添加到下拉列表中
+                $("<option value=" + result[i].id + ">" + result[i].username + "</option>").appendTo($allAfterSales);
+            }
+        });
+    }
+
+    // 指派售后处理
+    function appointAfterSales() {
+        var complaintId = $("#complaintId").val();
+        var afterSalesId = $("#allAfterSalesId").val();
+        // 发出指派售后请求
+        $.ajax({
+            url: "complaints/appointAfterSales",
+            data: {
+                "complaintId": complaintId,
+                "afterSalesId": afterSalesId
+            },
+            type: "GET"
+        }).done(function (result) {
+            console.log(result);
+            // 关闭指派售后面板
+            $appointAfterSalesPanel.css("display", "none");
+        })
+    }
+
+    // 取消指派售后
+    function cancelAppoint() {
+        $appointAfterSalesPanel.css("display", "none");
+    }
 </script>
 
 
