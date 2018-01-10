@@ -1,6 +1,7 @@
 package com.cdsxt.web.controller;
 
 import com.cdsxt.po.Complaint;
+import com.cdsxt.po.HandleMethod;
 import com.cdsxt.po.User;
 import com.cdsxt.service.ComplaintService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,6 +68,17 @@ public class ComplaintController {
     public String handleComplaint(Integer complaintId, String handleMethod) {
         Complaint complaint = this.complaintService.queryComplaintById(complaintId);
         this.complaintService.handleComplaint(complaint, handleMethod);
+        return "done";
+    }
+
+    // 处理回访
+    @ResponseBody
+    @RequestMapping(value = "handleCallback", method = RequestMethod.GET)
+    public String handleCallback(Boolean isDone, Integer complaintId, Date callBackDate, Integer handleMethodId) {
+        Complaint complaint = this.complaintService.queryComplaintById(complaintId);
+        // HandleMethod
+        // this.complaintService.handleCallback();
+        System.out.println(isDone + "," + complaintId + "," + callBackDate + "," + handleMethodId);
         return "done";
     }
 }

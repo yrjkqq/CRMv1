@@ -1,5 +1,9 @@
 package com.cdsxt.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -17,6 +21,7 @@ public class HandleMethod {
     private Integer id;
 
     // 与投诉多对一
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "complaint_id")
     private Complaint complaint;

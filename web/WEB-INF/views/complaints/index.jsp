@@ -121,7 +121,6 @@
                             </div>
                         </div>
                     </c:when>
-
                     <c:when test="${userRole.constant == 'SERVICE_MAN'}">
                         <%--客服人员--%>
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -137,7 +136,9 @@
                                 <button type="button" class="btn btn-danger">删除投诉</button>
                             </div>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-success">客户回访</button>
+                                <button type="button" class="btn btn-success"
+                                        onclick="queryAllUnCallback('未回访', ${currentUser.id})">客户回访
+                                </button>
                             </div>
                         </div>
                         <br>
@@ -207,6 +208,74 @@
                         </form>
 
                         <%--todo 修改投诉: 1. 显示出当前客服所提交的所有投诉; 2. 添加操作后即可修改投诉; 3. 投诉状态不能修改--%>
+
+                        <%--待回访记录面板--%>
+                        <div class="panel panel-default" id="unCallbackPanel" style="display:none">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">未回访投诉</h3>
+                            </div>
+                            <table class="table table-hover" id="unCallbackTab">
+                                <tr>
+                                    <th>投诉编号</th>
+                                    <th>投诉客户</th>
+                                    <th>联系人</th>
+                                    <th>联系电话</th>
+                                    <th>投诉问题</th>
+                                    <th>售后人员</th>
+                                    <th>处理编号</th>
+                                    <th>最新处理办法</th>
+                                    <th>处理时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </table>
+                            <div class="panel-footer">
+                                <button class="btn btn-warning btn-sm" onclick="closeUnCallbackPanel()">关闭</button>
+                            </div>
+                        </div>
+
+                        <%--处理回访面板--%>
+                        <div class="panel panel-default" id="handleCallbackPanel" style="display:none">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">处理回访</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="input-group">
+                                    <span class="input-group-addon">投诉编号</span>
+                                    <input type="text" class="form-control" readonly id="complaintId2">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">客服姓名</span>
+                                    <input type="text" class="form-control" readonly
+                                           value="${currentUser.username}">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">处理编号</span>
+                                    <input type="text" class="form-control" readonly id="handleMethodId">
+                                </div>
+                                <br>
+                                <div class="input-group date" id="datepicker1">
+                                    <span class="input-group-addon">回访时间</span>
+                                    <input type="text" class="form-control" id="callbackDate">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon" style="border-right-width: 2px">是否解决</span>
+                                    <label class="radio-inline" style="padding-left: 32px;">
+                                        <input type="radio" name="isDone" value="1">是
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="isDone" value="0">否
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="panel-footer">
+                                <button class="btn btn-warning btn-sm" onclick="cancelHandleCallback()">取消</button>
+                                <button class="btn btn-primary btn-sm" onclick="handleCallback()">处理</button>
+                            </div>
+                        </div>
 
 
                     </c:when>
@@ -295,10 +364,18 @@
     // 客服人员
     // 添加投诉
     function showAddComplaint() {
-        $("#addComplaint").toggleClass("hide");
+        $("#addComplaint").css("display", "block");
+        // 隐藏回访页面
+        $unCallbackPanel.css("display", "none");
+        $handleCallbackPanel.css("display", "none")
     }
 
     $('#datepicker').datepicker({
+        format: 'yyyy/mm/dd',
+        endDate: '0d'
+    });
+
+    $('#datepicker1').datepicker({
         format: 'yyyy/mm/dd',
         endDate: '0d'
     });
@@ -476,6 +553,106 @@
             cancelHandle();
         });
     }
+
+    // 回访面板
+    var $unCallbackPanel = $("#unCallbackPanel");
+    // 回访面板表格
+    var $unCallbackTab = $("#unCallbackTab");
+    // 处理回访面板
+    var $handleCallbackPanel = $("#handleCallbackPanel");
+
+    // 查看所有未回访记录
+    function queryAllUnCallback(status, currentUserId) {
+        // 隐藏添加记录面板
+        $("#addComplaint").css("display", "none");
+        $handleCallbackPanel.css("display", "none");
+        $unCallbackPanel.css("display", "block");
+        $unCallbackTab.find("tr:gt(0)").each(function () {
+            $(this).remove();
+        });
+        $.ajax({
+            url: "complaints/queryAll",
+            data: {
+                "status": status
+            },
+            type: "GET",
+            dataType: "json"
+        }).done(function (result) {
+            for (var i in result) {
+                // 只显示分配给当前售后的投诉
+                if (result[i].serviceMan.id === currentUserId) {
+                    var $tr = $("<tr>").appendTo($unCallbackTab);
+                    var handleMethods = result[i].handleMethods;
+
+                    // 最新的解决办法
+                    var latestHandleMethod = handleMethods[0];
+                    for (var j in handleMethods) {
+                        var handleMethod = handleMethods[j].handleMethod;
+                        latestHandleMethod = handleMethod.startDate < latestHandleMethod.startDate ? handleMethod : latestHandleMethod;
+                    }
+                    var startDate = new Date();
+                    // 处理开始时间
+                    startDate.setTime(latestHandleMethod.startDate);
+
+                    $("<td>" + result[i].id + "</td>" +
+                        "<td>" + result[i].client + "</td>" +
+                        "<td>" + result[i].contact + "</td>" +
+                        "<td>" + result[i].contactPhone + "</td>" +
+                        "<td>" + result[i].problem + "</td>" +
+                        "<td>" + result[i].serviceAfterSales.username + "</td>" +
+                        "<td>" + latestHandleMethod.id + "</td>" +
+                        "<td>" + latestHandleMethod.handleMethod + "</td>" +
+                        "<td>" + startDate.toDateString() + "</td>" +
+                        "<td><button onclick='showHandleCallback(" + result[i].id + "," + latestHandleMethod.id + ")' class='btn btn-primary btn-xs'>待回访</button></td>")
+                        .appendTo($tr);
+                }
+            }
+        });
+    }
+
+    // 显示处理回访面板
+    function showHandleCallback(complaintId, handleMethodId) {
+        $unCallbackPanel.css("display", "none");
+        $handleCallbackPanel.css("display", "block");
+        $("#handleMethodId").val(handleMethodId);
+        $("#complaintId2").val(complaintId);
+    }
+
+    // 处理回访
+    function handleCallback() {
+        var isDone = false;
+        $("input[name='isDone']").each(function () {
+            if (this.checked == true) {
+                isDone = $(this).val() == 1;
+            }
+        });
+
+        $.ajax({
+            url: "complaints/handleCallback",
+            data: {
+                "isDone": isDone,
+                "complaintId": $("#complaintId2").val(), // 投诉编号
+                "callBackDate": $("#callbackDate").val(), // 回访时间
+                "handleMethodId": $("#handleMethodId").val() // 处理编号
+            },
+            type: "GET"
+        }).done(function (result) {
+            console.log(result);
+            cancelHandleCallback();
+        });
+    }
+
+    // 取消回访
+    function cancelHandleCallback() {
+        $handleCallbackPanel.css("display", "none");
+        $unCallbackPanel.css("display", "block");
+    }
+
+    // 关闭回访面板
+    function closeUnCallbackPanel() {
+        $unCallbackPanel.css("display", "none");
+    }
+
 
 </script>
 

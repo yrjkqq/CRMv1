@@ -71,10 +71,15 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaintDao.addHandleMethod(hm);
 
         // 保存后再添加到投诉记录中
-        Set<HandleMethod> handleMethods = complaint.getHandlerMethods();
+        Set<HandleMethod> handleMethods = complaint.getHandleMethods();
         // 增加一条处理记录
         handleMethods.add(hm);
         // 修改投诉状态为: 未回访
         complaint.setStatus("未回访");
+    }
+
+    @Override
+    public void handleCallback(Complaint complaint, Boolean idDone, HandleMethod handleMethod, Date callbackDate) {
+
     }
 }

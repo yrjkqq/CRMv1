@@ -37,9 +37,8 @@ public class Complaint {
     private User serviceAfterSales;
 
     // 处理方式
-    @JsonIgnore
     @OneToMany(mappedBy = "complaint")
-    private Set<HandleMethod> handlerMethods;
+    private Set<HandleMethod> handleMethods;
 
     //投诉日期
     @Column(name = "complaint_date")
@@ -109,12 +108,12 @@ public class Complaint {
         this.serviceAfterSales = serviceAfterSales;
     }
 
-    public Set<HandleMethod> getHandlerMethods() {
-        return handlerMethods;
+    public Set<HandleMethod> getHandleMethods() {
+        return handleMethods;
     }
 
-    public void setHandlerMethods(Set<HandleMethod> handlerMethods) {
-        this.handlerMethods = handlerMethods;
+    public void setHandleMethods(Set<HandleMethod> handleMethods) {
+        this.handleMethods = handleMethods;
     }
 
     public Date getComplaintDate() {
@@ -136,7 +135,7 @@ public class Complaint {
                 ", serviceMan=" + serviceMan +
                 ", status='" + status + '\'' +
                 ", serviceAfterSales=" + serviceAfterSales +
-                ", handlerMethods=" + handlerMethods +
+                ", handleMethods=" + handleMethods +
                 ", complaintDate=" + complaintDate +
                 '}';
     }
